@@ -23,6 +23,6 @@ for (o  in (length(res)+1):10000) {
                              P2=200, # number of cov for col /factors
                              seed=o)
 
-  save(res, file=paste(getwd(),"/sim/local_res/check_cEBMF_2.RData",sep="" ))
+  save(res, file=paste(getwd(),"/sim/local_res/check_cEBMF_1.RData",sep="" ))
 }
 

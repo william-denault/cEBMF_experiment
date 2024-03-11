@@ -7,8 +7,8 @@ library(irlba)
 library(PMA)
 
 
-if(file.exists(paste(getwd(),"/sim/local_res/check_cEBMF_1.RData",sep="" ))){
-  load(paste(getwd(),"/sim/local_res/check_cEBMF_1.RData",sep="" ))
+if(file.exists(paste(getwd(),"/sim/local_res/check_cEBMF_4.RData",sep="" ))){
+  load(paste(getwd(),"/sim/local_res/check_cEBMF_4.RData",sep="" ))
 
 }else{
   res <-list()

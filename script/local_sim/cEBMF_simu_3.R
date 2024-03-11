@@ -9,8 +9,8 @@ library(PMA)
 
 
 
-if(file.exists(paste(getwd(),"/sim/local_res/check_cEBMF_1.RData",sep="" ))){
-  load(paste(getwd(),"/sim/local_res/check_cEBMF_1.RData",sep="" ))
+if(file.exists(paste(getwd(),"/sim/local_res/check_cEBMF_3.RData",sep="" ))){
+  load(paste(getwd(),"/sim/local_res/check_cEBMF_3.RData",sep="" ))
 
 }else{
   res <-list()
