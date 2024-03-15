@@ -18,9 +18,9 @@ if(file.exists(paste(getwd(),"/sim/local_res/check_cEBMF_2.RData",sep="" ))){
 for (o  in (length(res)+1):10000) {
 
   res[[o]] <-sim_func_cEBMF (noise_level= 0.5,
-                             max_iter_cEBMF=50,
-                             P1=200 , # number of cov for row /loadings
-                             P2=200, # number of cov for col /factors
+                             max_iter_cEBMF=10,
+                             P1=100 , # number of cov for row /loadings
+                             P2=100, # number of cov for col /factors
                              seed=o)
 
   save(res, file=paste(getwd(),"/sim/local_res/check_cEBMF_2.RData",sep="" ))
