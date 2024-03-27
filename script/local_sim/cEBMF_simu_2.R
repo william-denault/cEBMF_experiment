@@ -21,7 +21,8 @@ for (o  in (length(res)+1):10000) {
                              max_iter_cEBMF=10,
                              P1=100 , # number of cov for row /loadings
                              P2=100, # number of cov for col /factors
-                             seed=o)
+                             seed=o+1,
+                             epoch=10)
 
   save(res, file=paste(getwd(),"/sim/local_res/check_cEBMF_2.RData",sep="" ))
 }
