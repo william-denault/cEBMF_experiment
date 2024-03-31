@@ -33,7 +33,7 @@ df_simu$Method <- as.factor(df_simu$Method)
 df_simu$RMSE <- as.numeric(df_simu$RMSE)
 df_simu$ARI <- as.numeric(df_simu$ARI)
 library(ggplot2)
-ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, color=Method)) +
+P1 <- ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, color=Method)) +
   geom_boxplot()  +
 
 #  scale_y_log10()+
@@ -42,4 +42,11 @@ ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, color=M
   theme_bw()+
   theme(legend.position="none",
         strip.background = element_rect(fill = "white"))+
-  xlab("")
+  xlab("")+
+  ggtitle("Tiled  bi-clustering model")+
+  scale_y_log10()
+ggsave(P1, file="plot/tiling_simu.pdf",
+       width = 29.7,
+       height = 21,
+       units = "cm"
+)

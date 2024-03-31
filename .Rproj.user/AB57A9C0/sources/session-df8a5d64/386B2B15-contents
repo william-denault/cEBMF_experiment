@@ -1,0 +1,39 @@
+library(reticulate)
+
+# Assuming the rest of the setup code is correct and unchanged...
+# Correcting the shape specification and ensuring integer values
+
+# Function to define the GCN model
+# Function to define the GCN model
+model <- function(input_feature_dim, num_classes) {
+  # Define the shape of the input features
+  inputs <- layers$Input(shape = list(input_feature_dim))  # Ensure 'input_feature_dim' is an integer
+  
+  # Define the shape for graph inputs (e.g., adjacency matrix), it is usually sparse
+  graph_inputs <- layers$Input(shape = list(NULL), sparse = TRUE, dtype = 'float32')
+  
+  # First GCN layer
+  # Pass inputs and graph_inputs directly within a list to the GCNConv layer
+  output <- spektral$layers$GCNConv(units = 32, activation = 'relu')(list(inputs, graph_inputs))
+  
+  # Dropout for regularization
+  output <- layers$Dropout(rate = 0.5)(output)
+  
+  # Second GCN layer for class prediction
+  output <- spektral$layers$GCNConv(units = num_classes, activation = 'softmax')(list(output, graph_inputs))
+  
+  # Finalize the model
+  model <- models$Model(inputs = list(inputs, graph_inputs), outputs = output)
+  
+  # Compile the model with an optimizer, loss function, and metrics
+  model %>% compile(optimizer = 'adam', loss = 'categorical_crossentropy', metrics = 'acc')
+  
+  return(model)
+}
+
+# Initialize model parameters
+input_feature_dim <- as.integer(dim(X_numpy)[2])  # Number of features
+num_classes <- 3  # Adjust this to match your dataset's number of classes
+
+# Create the GCN model with the corrected function call
+gcn_model <- model(input_feature_dim, num_classes)

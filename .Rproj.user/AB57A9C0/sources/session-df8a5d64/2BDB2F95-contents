@@ -1,0 +1,58 @@
+library(reticulate)
+
+# Import necessary Python modules
+spektral <- import("spektral")
+numpy <- import("numpy")
+scipy_sparse <- import("scipy.sparse")
+keras <- import("keras")
+layers <- keras$layers
+models <- keras$models
+
+# Assuming A is your adjacency matrix and X is your feature matrix
+# Replace this part with your actual data loading mechanism
+A <- matrix(sample(0:1, 100, replace=TRUE), ncol=10)
+X <- matrix(rnorm(100), ncol=10)
+
+# Convert A to numpy array then to a scipy sparse matrix
+A_numpy <- numpy$array(A, dtype="float32")
+A_sparse <- scipy_sparse$csr_matrix(A_numpy)
+
+# Convert X to a format suitable for keras
+X <- keras$backend$constant(X)
+
+# Define GCN model
+model <- function() {
+  inputs <- layers$Input(shape = dim(X)[2])
+  graph_inputs <- layers$Input(shape = NULL, sparse = TRUE, dtype = 'float32')
+  
+  # Example GCN layer
+  output <- spektral$layers$GCNConv(32, activation = 'relu')(
+    list(inputs, graph_inputs)
+  )
+  output <- layers$Dropout(0.5)(output)
+  output <- spektral$layers$GCNConv(dim(Y)[2], activation = 'softmax')(
+    list(output, graph_inputs)
+  )
+  
+  # Create and compile the model
+  model <- models$Model(inputs = list(inputs, graph_inputs), outputs = output)
+  model %>% compile(
+    optimizer = 'adam',
+    loss = 'categorical_crossentropy',
+    metrics = 'acc'
+  )
+  
+  return(model)
+}
+
+# Initialize the GCN model
+gcn_model <- model()
+
+# Prepare your labels (Y) and train the model
+# Note: You need to preprocess Y to be categorical for multi-class classification
+# Y <- to_categorical(Y)
+
+# Example fitting the model - replace None with your actual data
+# gcn_model %>% fit(list(X, A_sparse), Y, batch_size = 1, epochs = 50)
+
+# Note: The actual fitting part is commented out because it requires real data for X, A, and Y.

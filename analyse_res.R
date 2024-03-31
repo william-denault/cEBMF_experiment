@@ -37,7 +37,7 @@ df_simu$Method <- as.factor(df_simu$Method)
  df_simu <- df_simu[-which(df_simu$Method=="cEBMF"),]
 df_simu$Method[which(df_simu$Method=="cEBMF0")] <- "cEBMF"
 library(ggplot2)
-ggplot(df_simu, aes(x=Method, y=RMSE, color=Method)) +
+P1<- ggplot(df_simu, aes(x=Method, y=RMSE, color=Method)) +
   geom_boxplot() +
   facet_wrap(~noise_level,scale='free',
              labeller = as_labeller(function(x) paste("noise sd =", x)))  +
@@ -45,7 +45,15 @@ ggplot(df_simu, aes(x=Method, y=RMSE, color=Method)) +
   theme(legend.position="none",
         strip.background = element_rect(fill = "white"))+
   xlab("") +
+  ggtitle("Sparsity driven covariate")+
   scale_y_log10()
+P1
+ggsave(P1, file="plot/simple_simu.pdf",
+       width = 29.7,
+       height = 21,
+       units = "cm"
+)
+
  ggplot(df_simu , aes(x=Method, y=RMSE, color=Method)) +
   geom_boxplot() +
   facet_wrap(~noise_level,scale='free') +
