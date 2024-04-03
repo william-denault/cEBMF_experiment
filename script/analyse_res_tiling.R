@@ -1,21 +1,21 @@
 library(ggplot2)
-load("C:/Document/Serieux/Travail/Package/comoR/sim/local_res/tiling_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_1.RData")
 tres <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
 
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
 
-load("C:/Document/Serieux/Travail/Package/comoR/sim/local_res/tiling_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_2.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Package/comoR/sim/local_res/tiling_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_3.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ARI,res[[i]]$ noise_level ) ))
 
 res[, ncol(res)] <- 3
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Package/comoR/sim/local_res/tiling_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_4.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Package/comoR/sim/local_res/tiling_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_1.RData")
 
 tlist <- list ()
 
@@ -31,7 +31,6 @@ df_simu <- do.call(rbind, tlist)
 df_simu <- as.data.frame(df_simu)
 df_simu$Method <- as.factor(df_simu$Method)
 df_simu$RMSE <- as.numeric(df_simu$RMSE)
-df_simu$ARI <- as.numeric(df_simu$ARI)
 library(ggplot2)
 P1 <- ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, color=Method)) +
   geom_boxplot()  +
@@ -45,6 +44,7 @@ P1 <- ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, c
   xlab("")+
   ggtitle("Tiled  bi-clustering model")+
   scale_y_log10()
+P1
 ggsave(P1, file="plot/tiling_simu.pdf",
        width = 29.7,
        height = 21,

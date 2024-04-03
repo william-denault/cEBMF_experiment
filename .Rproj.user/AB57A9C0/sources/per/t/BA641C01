@@ -1,14 +1,14 @@
 {
-    "id": "5B2FDCFD",
-    "path": "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/script/local_sim/cEBMF_simu_1.R",
-    "project_path": "script/local_sim/cEBMF_simu_1.R",
+    "id": "BA641C01",
+    "path": "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/script/local_sim/cEBMF_simu_2.R",
+    "project_path": "script/local_sim/cEBMF_simu_2.R",
     "type": "r_source",
-    "hash": "0",
+    "hash": "2097235917",
     "contents": "",
     "dirty": false,
-    "created": 1711396605783.0,
+    "created": 1711396721440.0,
     "source_on_save": false,
-    "relative_order": 1,
+    "relative_order": 2,
     "properties": {
         "source_window_id": "",
         "Source": "Source",
@@ -16,11 +16,11 @@
         "scrollLine": "0"
     },
     "folds": "",
-    "lastKnownWriteTime": 1711396801,
+    "lastKnownWriteTime": 1711396797,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1711396801592,
+    "last_content_update": 1711396797041,
     "read_only": false,
     "read_only_alternatives": []
 }
