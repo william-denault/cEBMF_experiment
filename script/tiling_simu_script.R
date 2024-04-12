@@ -91,18 +91,18 @@ tiling_sim <-  function(noise_level,seed=1){
                       X_l,
                       X_f,
                       mnreg_type="keras",
-                      K=3,
+                      K=4,
                       type_noise='constant',
-                      init_type="flashier_NMF",
+                      init_type="udv",
                       maxit=10,
                       tol=1e-3 ,
                       param_como.x  = list(max_class=10,mnreg_type="keras",
                                            prior="mix_exp" ,
-                                           epoch     =20,
+                                           epoch     =50,
                                            batch_size= 500),
                       param_como.y  = list(max_class=10,mnreg_type="keras",
                                            prior="mix_norm" ,
-                                           epoch     =20,
+                                           epoch     =50,
                                            batch_size= 100),
                       param_nnet.x  =param_nnet.x ,
                       param_nnet.y  =param_nnet.y,
@@ -238,9 +238,7 @@ tiling_sim <-  function(noise_level,seed=1){
 
 
 
-  Y_est_nnet <- Reduce("+", lapply( 1:res_nnet$K, function(k) res_nnet $loading[,k] %*%t(res_nnet $factor[,k] ) ))
-
-  rmse_cEBMF0       <- rmse(c(Y_est_nnet)  ,c(L%*%f))
+  rmse_cEBMF0       <- rmse(c(res_nnet$Y_fit)  ,c(L%*%f))
   rmse_flash        <- rmse(c(fitted(fit_default )) ,c(L%*%f))
   rmse_cEBMF_nnet   <- rmse(c(fitted(fit_custom )) ,c(L%*%f))
   rmse_spatial_PCA  <- rmse(t(LIBD@SpatialPCs) %*%  t(LIBD@W),c(L%*%f))
