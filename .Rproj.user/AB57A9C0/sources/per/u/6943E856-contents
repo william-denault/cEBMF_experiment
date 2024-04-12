@@ -1,0 +1,20 @@
+library(ggplot2)
+library(dplyr)
+
+# Create a dataset
+set.seed(123)  # for reproducibility
+df <- expand.grid(x = 1:10, y = 1:10)
+df$id <- seq_len(nrow(df))
+df$fill <- sample(c("blue", "green", "yellow", "purple"), size = nrow(df), replace = TRUE)
+
+# Create the base plot
+p <- ggplot(df, aes(x = x, y = y, fill = fill)) + 
+  # Add 'bar' geom, where width is less than 1 to create a space between 'pies'
+  geom_tile(color = "white", size = 0.1, width = 0.9, height = 0.9) + 
+  coord_fixed() +
+  # Set theme options to remove axes and grid
+  theme_void() +
+  theme(legend.position = "none")
+
+# Create the polar plot
+p + coord_polar()

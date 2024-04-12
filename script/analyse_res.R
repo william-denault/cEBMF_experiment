@@ -1,21 +1,21 @@
- load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/check_cEBMF_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
 tres <- do.call( rbind, lapply ( 10:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/check_cEBMF_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/check_cEBMF_2.RData")
 res  <- do.call( rbind, lapply ( 10:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
  tres <- rbind(tres, res)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/check_cEBMF_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/check_cEBMF_3.RData")
 res  <- do.call( rbind, lapply ( 10:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/check_cEBMF_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/check_cEBMF_4.RData")
 res  <- do.call( rbind, lapply ( 10:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
 
- load("C:/Document/Serieux/Travail/Package/comoR/sim/local_res/check_cEBMF_1.RData")
- plot(tres[,1],tres[,3])
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
+plot(tres[,1],tres[,3])
  abline(a=0,b=1)
 
  plot(tres[,1],tres[,2])

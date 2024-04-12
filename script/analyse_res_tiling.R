@@ -1,34 +1,35 @@
 library(ggplot2)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_1.RData")
-tres <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/tiling_1.RData")
+tres <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ noise_level ) ))
 
-res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
+res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_2.RData")
-res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/tiling_2.RData")
+res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_3.RData")
-res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ARI,res[[i]]$ noise_level ) ))
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/tiling_3.RData")
+res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 
 res[, ncol(res)] <- 3
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_4.RData")
-res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,res[[i]]$ARI, res[[i]]$ noise_level ) ))
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/tiling_4.RData")
+res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/local_res/tiling_1.RData")
-
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/sim/tiling_1.RData")
+colnames(tres)[8] <- "noise_level"
 tlist <- list ()
-
-for( i in 1:length(res[[1]]$rmse) ){
-  toremove <-c( (1:length(res[[1]]$rmse))[-i], (1:length(res[[1]]$ARI))[-i]+ length(res[[1]]$rmse))
-  tt <- tres[,- toremove ]
-  tlist[[i]] <- cbind ( rep(colnames(tres)[i], nrow(tt)), tt  )
-  colnames(tlist[[i]])[c(1,2,3,4)] <- c("Method", "RMSE", "ARI", "noise_level")
+h=1
+for ( i in 1:nrow(tres)){
+  for (j in 1:length(res[[1]]$rmse)){
+    tlist[[h]]<- c( colnames(tres)[j], tres[ i ,j], tres [i,8])
+    h=h+1
+  }
 }
 
 
 df_simu <- do.call(rbind, tlist)
 df_simu <- as.data.frame(df_simu)
+colnames(df_simu) <- c("Method", "RMSE", "noise_level")
 df_simu$Method [which(df_simu$Method=="Spatial PCA")] <- "spaPCA"
 df_simu$Method <- as.factor(df_simu$Method)
 df_simu$RMSE <- as.numeric(df_simu$RMSE)
@@ -58,3 +59,5 @@ ggsave(P1, file="plot/tiling_simu.pdf",
        height = 21,
        units = "cm"
 )
+
+table(df_simu$Method, df_simu$noise_level)
