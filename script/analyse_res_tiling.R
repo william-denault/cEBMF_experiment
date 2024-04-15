@@ -54,10 +54,10 @@ P1 <- ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, c
   ggtitle("Tiled  bi-clustering model")+
   scale_y_log10()
 P1
-ggsave(P1, file="plot/tiling_simu.pdf",
-       width = 29.7,
-       height = 21,
-       units = "cm"
-)
+#ggsave(P1, file="plot/tiling_simu.pdf",
+#       width = 29.7,
+#       height = 21,
+#       units = "cm"
+#)
 
 table(df_simu$Method, df_simu$noise_level)
