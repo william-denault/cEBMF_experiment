@@ -1,0 +1,17 @@
+Loading required package: ebnm
+Loading required package: magrittr
+Warning message:
+In asMethod(object) :
+  sparse->dense coercion: allocating vector of size 1.1 GiB
+Warning message:
+In asMethod(object) :
+  sparse->dense coercion: allocating vector of size 1.2 GiB
+Warning message:
+In asMethod(object) :
+  sparse->dense coercion: allocating vector of size 1.2 GiB
+Warning message:
+In asMethod(object) :
+  sparse->dense coercion: allocating vector of size 1.0 GiB
+Warning message:
+In asMethod(object) :
+  sparse->dense coercion: allocating vector of size 1.0 GiB

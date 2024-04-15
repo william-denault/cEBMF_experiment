@@ -43,7 +43,6 @@ analyse_slice <- function(i){
 
     library(softImpute)
     l2_reg=0.01
-    Y=tt0
     X_l =X
 
     X_f =matrix(rnorm(2* ncol(tt0), sd=3), nrow = ncol(tt0))

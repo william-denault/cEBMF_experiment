@@ -1,0 +1,26 @@
+{
+    "id": "EC0E00BF",
+    "path": "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/script/analyse_slice.R",
+    "project_path": "script/analyse_slice.R",
+    "type": "r_source",
+    "hash": "1991474970",
+    "contents": "",
+    "dirty": false,
+    "created": 1713209722701.0,
+    "source_on_save": false,
+    "relative_order": 8,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "45,9",
+        "scrollLine": "43"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1713209742,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1713209742575,
+    "read_only": false,
+    "read_only_alternatives": []
+}
