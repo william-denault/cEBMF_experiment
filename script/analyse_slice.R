@@ -87,15 +87,14 @@ analyse_slice <- function(i){
     param_como.x  = list(max_class=10,mnreg_type="keras",
                          prior="mix_exp" ,
                          epoch     =100,
-                         batch_size= 500)
+                         batch_size= 1500)
     param_como.y  = list(max_class=10,mnreg_type="keras",
-                         prior="mix_exp" ,
-                         epoch     =20,
-                         batch_size= 100)
+                         prior="mix_exp"  )
       cEBMF.obj <- comoR:::init_cEBMF (Y,
                                X_l,
                                X_f,
-                               mnreg_type=mnreg_type,
+                               mnreg_type.x="keras",
+                               mnreg_type.y="constant_mnreg",
                                K=K,
                                type_noise    = type_noise,
                                init_type     = init_type,
@@ -103,7 +102,6 @@ analyse_slice <- function(i){
                                param_como.y  =  param_como.y,
                                maxit_como    = maxit_como,
                                param_nnet.x  = param_nnet.x,
-                               param_nnet.y  = param_nnet.y,
                                param_como2   = param_como2,
                                param_susie   = param_susie
 

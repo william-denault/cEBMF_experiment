@@ -18,8 +18,8 @@ for( i in c(1:2,4,6:12)){
 
 
 
-  load( paste0( "/home/wdenault/cEBMF_RCC_experiments/data/DLPFC/LIBD_sample",i,".RData"))
-  load(paste0( "/home/wdenault/cEBMF_RCC_experiments/data/res_spatial_PCA/run_spatial_DLPFC",i,".RData"))
+  load( paste0( "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/data/DLPFC/LIBD_sample",i,".RData"))
+  load(paste0( "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/data/res_spatial_PCA/run_spatial_DLPFC",i,".RData"))
   tt =  as.matrix(count_sub)
   truth = KRM_manual_layers_sub$layer_guess_reordered[match(colnames(LIBD@normalized_expr),colnames(count_sub))]
 
@@ -32,7 +32,7 @@ for( i in c(1:2,4,6:12)){
   X=loc
 
 
-  load(paste0( "/home/wdenault/cEBMF_RCC_experiments/data/res_ebmf/fit_default_",i,".RData"))
+  load(paste0( "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/data/res_ebmf/fit_default_",i,".RData"))
 
   prop <-  fit_default$L_pm/rowSums(fit_default$L_pm)
 
@@ -49,7 +49,7 @@ for( i in c(1:2,4,6:12)){
 
 
   library(softImpute)
-  load(paste0( "/home/wdenault/cEBMF_RCC_experiments/data/res_cebmf/fit_cebmf_",i,".RData"))
+  load(paste0( "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/data/res_cebmf/fit_cebmf_",i,".RData"))
   res <-cEBMF.obj
 
 
@@ -192,9 +192,9 @@ for( i in c(1:2,4,6:12)){
 
   res <- list(res_cebnm=res_cebnm,res_ebnm =res_ebnm)
 
-  save(res, file=paste0("/home/wdenault/cEBMF_RCC_experiments/res_ARI_score/slice_",i,".RData"))
+  save(res, file=paste0("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/res_ARI_score/slice_",i,".RData"))
   P_out <- grid.arrange(P0  ,P1 ,P2, ncol=3)
-  ggsave(P_out,file= paste0("/home/wdenault/cEBMF_RCC_experiments/plot/plot_slice_",i,".pdf"),
+  ggsave(P_out,file= paste0("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/plot/plot_slice_",i,".pdf"),
          width =29.7  ,
          height =  13,
          units = "cm"
