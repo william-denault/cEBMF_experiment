@@ -1,4 +1,4 @@
-analyse_slice <- function(i){
+for( i in c(1:2,4,6:12)){
 
 
 
@@ -22,6 +22,16 @@ analyse_slice <- function(i){
   load(paste0( "/home/wdenault/cEBMF_RCC_experiments/data/res_spatial_PCA/run_spatial_DLPFC",i,".RData"))
   tt =  as.matrix(count_sub)
   truth = KRM_manual_layers_sub$layer_guess_reordered[match(colnames(LIBD@normalized_expr),colnames(count_sub))]
+
+
+  loc =  LIBD @location
+  tt0 = ( t(as.matrix(LIBD@normalized_expr)) )
+
+
+  maxit=100
+  X=loc
+
+
   load(paste0( "/home/wdenault/cEBMF_RCC_experiments/data/res_ebmf/fit_default_",i,".RData"))
 
   prop <-  fit_default$L_pm/rowSums(fit_default$L_pm)
