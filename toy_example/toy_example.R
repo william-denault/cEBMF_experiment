@@ -5,6 +5,7 @@ set.seed(1)
 cluster_colors <- c("darkorange","dodgerblue","darkblue")
 load("fit_plot_Neurips.RData")
 Z <- file_pc$Z
+Z <- t(t(Z) - apply(Z,2,min))
 sim <- with(file_pc,data.frame(x = x,y = y,cluster = 0))
 for (k in 1:3)
   sim[file_pc$L[,k] == 1,"cluster"] <- k
@@ -27,8 +28,7 @@ print(table(true = sim$cluster,est = res$cluster))
 #    2   1   0 335
 #    3   2 341   2
 set.seed(1)
-fit <- nnmf(scale(Z,center = TRUE,scale = FALSE),
-            k = 3,method = "scd",loss = "mse",verbose = 2,
+fit <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
             n.threads = 2,rel.tol = 1e-8,max.iter = 100)
 res2 <- kmeans(fit$W,centers = 3)
 print(table(true = sim$cluster,est = res2$cluster))
