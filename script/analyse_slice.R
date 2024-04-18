@@ -42,7 +42,7 @@ analyse_slice <- function(i){
   }else{
 
     library(softImpute)
-    l2_reg=0.01
+    l2_reg=0.1
     Y=tt0
     X_l =X
 
@@ -86,26 +86,24 @@ analyse_slice <- function(i){
 
     param_como.x  = list(max_class=10,mnreg_type="keras",
                          prior="mix_exp" ,
-                         epoch     =100,
-                         batch_size= 1500)
-    param_como.y  = list(max_class=10,mnreg_type="keras",
+                         epoch     =150,
+                         batch_size= 1000)
+    param_como.y  = list(max_class=10,mnreg_type="constant_mnreg",
                          prior="mix_exp"  )
-      cEBMF.obj <- comoR:::init_cEBMF (Y,
-                               X_l,
-                               X_f,
-                               mnreg_type.x="keras",
-                               mnreg_type.y="constant_mnreg",
-                               K=K,
-                               type_noise    = type_noise,
-                               init_type     = init_type,
-                               param_como.x  =  param_como.x,
-                               param_como.y  =  param_como.y,
-                               maxit_como    = maxit_como,
-                               param_nnet.x  = param_nnet.x,
-                               param_como2   = param_como2,
-                               param_susie   = param_susie
-
-      )### Need to carry info about como obj
+    cEBMF.obj <- comoR:::init_cEBMF (Y,
+                                     X_l,
+                                     X_f,
+                                     mnreg_type.x="keras",
+                                     mnreg_type.y="constant_mnreg",
+                                     K=clusterNum[i],
+                                     type_noise    = type_noise,
+                                     init_type     = init_type,
+                                     param_como.x  =  param_como.x,
+                                     param_como.y  =  param_como.y,
+                                     maxit_como    = 1,
+                                     param_nnet.x  = param_nnet.x,
+                                     param_como2   = param_como2,
+                                     param_susie   = param_susie )
       for (o in 1:maxit) {
         cEBMF.obj <- comoR:::cEBMF_iter  (cEBMF.obj)
         cEBMF.obj <- comoR:::out_prep.cEBMF(cEBMF.obj)
