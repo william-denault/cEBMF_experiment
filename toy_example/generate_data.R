@@ -151,7 +151,7 @@ fit_default <-   flash_init(Z ) %>%
 
   flash_set_verbose(0) %>%
   flash_greedy(
-    ebnm_fn = c(ebnm_point_exponential, ebnm_point_exponential)
+    ebnm_fn = c(ebnm_point_exponential, ebnm_ash)
   )
 
 library(keras)
