@@ -1,4 +1,4 @@
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/Fig_1_data/fit_plot_Neurips.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/toy_example/fit_plot_Neurips.RData")
 x= file_pc$x
 y= file_pc$y
 
@@ -7,7 +7,7 @@ res= file_pc$fit_custom
 fit_default=file_pc$fit_default
 LIBD=file_pc$LIBD
 
-
+library(ggplot2)
 
 df <- data.frame(x=x,y=y, L=  L[,1])
 P01 <- ggplot(df, aes ( x,y, col = L ))+
@@ -138,7 +138,7 @@ P21 <-ggplot(df, aes ( x,y, col =  L  ))+
 
 
 
-df <- data.frame(x=x,y=y, L= fit_default$L_pm[,2])
+df <- data.frame(x=x,y=y, L= 0*fit_default$L_pm[,1])
 P22 <-ggplot(df, aes ( x,y, col = L ))+
   geom_point(size=2)+
   scale_color_gradient2(low = "blue", mid = "grey", high = "red", midpoint = 0) +
@@ -187,7 +187,7 @@ P31 <-ggplot(df, aes ( x,y, col = abs( L)  ))+
                                      axis.ticks.x=element_blank())
 
 
-df <- data.frame(x=x,y=y, L= 0*fit_default$L_pm[,2])
+df <- data.frame(x=x,y=y, L= 0*fit_default$L_pm[,1])
 P32 <-ggplot(df, aes ( x,y, col = L ))+
   geom_point(size=2)+
   scale_color_gradient2(low = "blue", mid = "grey", high = "red", midpoint = 0) +
