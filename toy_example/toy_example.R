@@ -36,3 +36,15 @@ print(round(rbind(colMeans(fit$W[sim$cluster == 1,]),
                   colMeans(fit$W[sim$cluster == 2,]),
                   colMeans(fit$W[sim$cluster == 3,])),
             digits = 2))
+
+
+
+print(round(rbind(colMeans(file_pc$fit_default$L_pm[sim$cluster == 1,]),
+                  colMeans(file_pc$fit_default$L_pm[sim$cluster == 2,]),
+                  colMeans(file_pc$fit_default$L_pm[sim$cluster == 3,])),
+            digits = 2))
+res3 <- kmeans(file_pc$fit_default$L_pm,centers = 3)
+print(table(true = sim$cluster,est = res3$cluster))
+
+res4 <- kmeans(file_pc$fit_custom$loading,centers = 3)
+print(table(true = sim$cluster,est = res4$cluster))
