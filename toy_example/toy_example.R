@@ -52,7 +52,7 @@ p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
 # flashier
 # --------
 fit_flash <- flash(Z,greedy_Kmax = 2,
-                   ebnm_fn = ebnm_normal,
+                   ebnm_fn = ebnm_point_normal,
                    backfit = TRUE)
 # L <- fit_flash$L_pm
 L <- ldf(fit_flash,type = "2")$L
