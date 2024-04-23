@@ -63,3 +63,40 @@ ggsave(P1, file="plot/simple_simu.pdf",
   facet_wrap(~noise_level,scale='free') +
   scale_y_log10()
 table(df_simu$Method, df_simu$noise_level)
+
+
+
+
+library(dplyr)
+summary_data <- df_simu  %>%
+  group_by(Method,noise_level) %>%
+  summarise(
+    mean = mean(RMSE, na.rm = TRUE),
+    se = 1.96*sd(RMSE, na.rm = TRUE) / sqrt(n())
+  )
+
+
+summary_data$hline <- rep( mean(summary_data$mean), nrow(summary_data) )
+for ( i in 1:nrow(summary_data) ){
+
+        summary_data$hline[i] <- min ( summary_data$mean[which(summary_data$noise_level==summary_data$noise_level[i]  )])
+    }
+
+
+# Create the plot
+ggplot(summary_data, aes(x = Method, y = mean, color=Method)) +
+  geom_point() +  # or geom_bar(stat = "identity") for bars representing the mean
+  geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2) +
+  facet_wrap(~noise_level, scale='free', labeller = as_labeller(function(x) paste("noise sd =", x))) +
+  theme_bw() +
+  theme(legend.position = "none",
+        plot.title = element_text(size = 20), # Apply to plot title
+        axis.title = element_text(size = 20), # Apply to both axis titles
+        strip.text = element_text(size = 20),
+        axis.text.x = element_text(size = 15), # X axis tick marks
+        axis.text.y = element_text(size = 15),# Apply to facet strip text
+        strip.background = element_rect(fill = "white")) +
+  xlab("") +
+  geom_hline(aes(yintercept = hline), linetype = "dashed", color = "red") +
+  ggtitle("Sparsity driven covariate") +
+  scale_y_log10()
