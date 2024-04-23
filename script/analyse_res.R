@@ -97,6 +97,6 @@ ggplot(summary_data, aes(x = Method, y = mean, color=Method)) +
         axis.text.y = element_text(size = 15),# Apply to facet strip text
         strip.background = element_rect(fill = "white")) +
   xlab("") +
-  geom_hline(aes(yintercept = hline), linetype = "dashed", color = "red") +
+  geom_hline(aes(yintercept = hline), linetype = "dashed", color = "black") +
   ggtitle("Sparsity driven covariate") +
   scale_y_log10()
