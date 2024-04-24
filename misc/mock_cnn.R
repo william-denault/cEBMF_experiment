@@ -58,6 +58,15 @@ image_stack <- abind(image_arrays, along = 4)
 
 # Convert labels to a matrix
 label_matrix <- do.call(rbind, labels)
+# Assuming 'label_matrix' contains integer class labels ranging from 0 to 2
+# Convert integer labels to a one-hot format
+y_train <- label_matrix  # to_categorical(label_matrix, num_classes = 3)
+
+# Check shapes of the input and labels
+cat("Shape of input images:", dim(x_train), "\n")
+cat("Shape of labels:", dim(y_train), "\n")
+
+# Define the model
 model <- keras_model_sequential() %>%
   layer_conv_2d(filters = 32, kernel_size = c(3,3), activation = 'relu', input_shape = c(32, 32, 1)) %>%
   layer_max_pooling_2d(pool_size = c(2,2)) %>%
@@ -74,9 +83,6 @@ model %>% compile(
   metrics = 'accuracy'
 )
 
-# Convert to a keras compatible format
-x_train <- array_reshape(image_stack, dim = c(dim(image_stack)[4], 32, 32, 1))
-y_train <- to_categorical(label_matrix, num_classes = 3)
-
-# Train the model
+# Fit the model
 model %>% fit(x_train, y_train, epochs = 10, batch_size = 5)
+
