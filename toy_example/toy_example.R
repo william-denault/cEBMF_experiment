@@ -114,33 +114,6 @@ p12
 
 
 
-
-L <-file_pc$fit_custom$loading[,1:2]
-colnames(L) <- c("loading1","loading2")
-pdat11 <- cbind(sim,L)
-pdat11 <- pdat11[order(pdat11$cluster,decreasing = TRUE),]
-p11 <- ggplot(pdat11,aes(x = loading1,y = loading2,color = cluster)) +
-  geom_point(show.legend = FALSE, alpha=0.5) +
-  scale_color_manual(values = cluster_colors) +
-  labs(title = "cEBMF") +
-  theme_cowplot(font_size = 10)
-p11
-
-L <-file_pc$fit_custom$loading[,2:3]
-colnames(L) <- c("loading2","loading3")
-pdat12 <- cbind(sim,L)
-pdat12 <- pdat12[order(pdat12$cluster,decreasing = TRUE),]
-p12 <- ggplot(pdat12,aes(x = loading2,y = loading3,color = cluster)) +
-  geom_point(show.legend = FALSE, alpha=0.5) +
-  scale_color_manual(values = cluster_colors) +
-  labs(title = "cEBMF") +
-  theme_cowplot(font_size = 10)
-p12
-
-
-
-
-
 L <-t(file_pc$LIBD@SpatialPCs[1:2,])
 colnames(L) <- c("PC1","PC2")
 pdat21 <- cbind(sim,L)
@@ -164,3 +137,64 @@ p22 <- ggplot(pdat22,aes(x = PC2,y = PC3,color = cluster)) +
   theme_cowplot(font_size = 10)
 p22
 
+print(plot_grid(p1,p2,p3,p4,
+
+                p11,p12,
+                p21,p22,
+                 ncol = 2))
+
+
+
+#prior plot
+
+cEBMF.obj <- file_pc$fit_custom
+
+
+
+
+df_prior <-  data.frame(x=x,y=y, pi0 = exp(cEBMF.obj$check_l_prior[[1]][,1]))
+P_prior_1 <- ggplot(df_prior, aes(x,y,col=pi0))+
+  geom_point(show.legend = FALSE)+
+  scale_color_gradient2(low =  "grey", high = "darkblue" ,midpoint = 0.5 ) +
+  geom_hline(yintercept = 0.33)+
+  geom_hline(yintercept = 0.66)+
+  geom_vline(xintercept = 0.66)+
+  geom_vline(xintercept = 0.33)+
+  theme_minimal()+theme( axis.text.y=element_blank(),
+
+                         axis.ticks.y=element_blank(),
+                         axis.text.x=element_blank(),
+                         axis.ticks.x=element_blank())
+P_prior_1
+df_prior <-  data.frame(x=x,y=y, pi0 = exp(cEBMF.obj$check_l_prior[[2]][,1]))
+P_prior_2 <- ggplot(df_prior, aes(x,y,col=pi0))+
+  geom_point(show.legend = FALSE)+
+  scale_color_gradient2(low =  "grey", high = "darkblue" ,midpoint = 0.5 ) +
+  geom_hline(yintercept = 0.33)+
+  geom_hline(yintercept = 0.66)+
+  geom_vline(xintercept = 0.66)+
+  geom_vline(xintercept = 0.33)+
+  theme_minimal()+theme( axis.text.y=element_blank(),
+
+                         axis.ticks.y=element_blank(),
+                         axis.text.x=element_blank(),
+                         axis.ticks.x=element_blank())
+P_prior_2
+df_prior <-  data.frame(x=x,y=y, pi0 = exp(cEBMF.obj$check_l_prior[[3]][,1]))
+P_prior_3 <- ggplot(df_prior, aes(x,y,col=pi0))+
+  geom_point()+
+  scale_color_gradient2(low =  "grey", high = "darkblue" ,midpoint = 0.5 ) +
+  geom_hline(yintercept = 0.33)+
+  geom_hline(yintercept = 0.66)+
+  geom_vline(xintercept = 0.66)+
+  geom_vline(xintercept = 0.33)+
+  theme_minimal()+theme( axis.text.y=element_blank(),
+
+                         axis.ticks.y=element_blank(),
+                         axis.text.x=element_blank(),
+                         axis.ticks.x=element_blank())
+P_prior_3
+
+print(plot_grid(P_prior_1,P_prior_2,P_prior_3,
+
+                ncol = 3))

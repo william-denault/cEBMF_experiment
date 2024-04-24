@@ -272,7 +272,7 @@ param_como.y  = list(max_class=10,mnreg_type="constant_mnreg",
 cEBMF.obj <- cEBMF (Z,
                     X_l,
                     X_f,
-                    maxit=4,
+                    maxit=20 ,
                     mnreg_type.x="keras",
                     mnreg_type.y="constant_mnreg",
                     K=3,
@@ -283,7 +283,8 @@ cEBMF.obj <- cEBMF (Z,
                     maxit_como    = 1,
                     param_nnet.x  = param_nnet.x,
                     param_como2   = param_como2,
-                    param_susie   = param_susie )
+                    param_susie   = param_susie ,
+                    check_l_prior = TRUE)
 
 
 
@@ -498,12 +499,12 @@ library(grid)
 
 
 fit_factor = ggdraw() +
-  draw_plot(P01 + theme(legend.position = "none" ), x = 0   , y = 0.75, width= 0.25, height= 0.25) +
+  draw_plot(P01 + theme(legend.position = "none" ), x = 0  , y = 0.75, width= 0.25, height= 0.25) +
   draw_plot(P02 + theme(legend.position = "none"), x = 0.3 , y = 0.75, width= 0.25, height= 0.25) +
   draw_plot(P03 + theme(legend.position = "none"), x = 0.6 , y = 0.75, width= 0.25, height= 0.25) +
-  draw_plot(P11 + theme(legend.position = "none"), x = 0   , y = 0.5, width= 0.25, height= 0.25) +
-  draw_plot(P21 + theme(legend.position = "none"), x = 0.3 , y = 0.5, width= 0.25, height= 0.25) +
-  draw_plot(P31 + theme(legend.position = "none"), x = 0.6 , y = 0.5, width= 0.25, height= 0.25) +
+  draw_plot(P11 + theme(legend.position = "none"), x = 0   , y = 0.5 , width= 0.25, height= 0.25) +
+  draw_plot(P21 + theme(legend.position = "none"), x = 0.3 , y = 0.5 , width= 0.25, height= 0.25) +
+  draw_plot(P31 + theme(legend.position = "none"), x = 0.6 , y = 0.5 , width= 0.25, height= 0.25) +
 
   draw_plot(P12 + theme(legend.position = "none"), x = 0   , y = 0.25, width= 0.25, height= 0.25) +
   draw_plot(P22 + theme(legend.position = "none"), x = 0.3 , y = 0.25, width= 0.25, height= 0.25) +
@@ -530,11 +531,12 @@ hist(cEBMF.obj$loading
 
 
 
-#file_pc <-  list(x=x,y=y, L=  L,
-#                 f=f,
-#                 Z=Z,
-#                 fit_custom=fit_custom,
-#                 fit_default=fit_default,
-#                LIBD=LIBD
-#)
-#save(file_pc, file = "fit_plot_Neurips.RData")
+fit_custom<- cEBMF.obj
+ file_pc <-  list(x=x,y=y, L=  L,
+                  f=f,
+                  Z=Z,
+                  fit_custom=fit_custom,
+                 fit_default=fit_default,
+                 LIBD=LIBD
+ )
+ save(file_pc, file = "toy_example/fit_plot_Neurips.RData")
