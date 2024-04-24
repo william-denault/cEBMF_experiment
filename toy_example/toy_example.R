@@ -18,8 +18,8 @@ for (k in 1:3)
   sim[file_pc$L[,k] > 0,"cluster"] <- k
 sim <- transform(sim,cluster = factor(cluster))
 p1 <- ggplot(sim,aes(x = x,y = y,color = cluster)) +
-  geom_point() +
-  scale_color_manual(values = cluster_colors) +
+  geom_point(show.legend = FALSE) +
+  scale_color_manual(values = cluster_colors,) +
   labs(title = "ground truth") +
   theme_cowplot(font_size = 10)
 
@@ -29,7 +29,7 @@ pca <- prcomp(Z)
 pdat2 <- cbind(sim,pca$x[,1:2])
 pdat2 <- pdat2[order(pdat2$cluster,decreasing = TRUE),]
 p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
-  geom_point() +
+  geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "PCA") +
   theme_cowplot(font_size = 10)
@@ -51,18 +51,34 @@ p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
 
 # flashier
 # --------
-fit_flash <- flash(Z,greedy_Kmax = 2,
-                   ebnm_fn = ebnm_point_normal,
-                   backfit = TRUE)
-# L <- fit_flash$L_pm
+ks <- 1:2
+fit_flash <- flash_init(Z,var_type = 0)
+fit_flash <- flash_factors_init(fit_flash,
+                           list(pca$x[,ks],pca$rotation[,ks]),
+                           ebnm_point_laplace)
+fit_flash <- flash_backfit(fit_flash)
+# fit_flash <- flash(Z,greedy_Kmax = 2,
+#                    ebnm_fn = ebnm_point_laplace,
+#                    backfit = TRUE)
 L <- ldf(fit_flash,type = "2")$L
 colnames(L) <- c("PC1","PC2")
-pdat4 <- cbind(sim,L)
-pdat4 <- pdat4[order(pdat4$cluster,decreasing = TRUE),]
-p3 <- ggplot(pdat4,aes(x = PC1,y = PC2,color = cluster)) +
-  geom_point() +
+pdat3 <- cbind(sim,L)
+pdat3 <- pdat3[order(pdat3$cluster,decreasing = TRUE),]
+p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
+  geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
-  labs(title = "flashier") +
+  labs(title = "flashier + point_laplace") +
   theme_cowplot(font_size = 10)
 
-print(plot_grid(p1,p2,p3,nrow = 2,ncol = 2))
+# PCA vs. flashier
+# ----------------
+pdat4 <- data.frame(pca      = as.vector(pca$rotation[,ks]),
+                    flashier = as.vector(ldf(fit_flash)$F))
+p4 <- ggplot(pdat4,aes(x = pca,y = flashier)) +
+  geom_point(shape = 4,size = 0.75) +
+  geom_abline(intercept = 0,slope = 1,color = "magenta",linetype = "dashed") +
+  labs(y = "flashier + point_laplace",
+       title = "rotation matrix") +
+  theme_cowplot(font_size = 10)
+
+print(plot_grid(p1,p2,p3,p4,nrow = 2,ncol = 2))
