@@ -56,14 +56,21 @@ image_arrays <- lapply(tiles, function(tile) {
 # Stack all images into a single array
 image_stack <- abind(image_arrays, along = 4)
 
+x_train <- abind::abind(lapply(image_arrays, function(x) aperm(x, c(2, 1, 3))), along = 4)
+x_train <- aperm(x_train, c(4, 1, 2, 3))  # Rearrange to [samples, height, width, channels]
+cat("Corrected shape of input images:", dim(x_train), "\n")
+
+
 # Convert labels to a matrix
 label_matrix <- do.call(rbind, labels)
 # Assuming 'label_matrix' contains integer class labels ranging from 0 to 2
 # Convert integer labels to a one-hot format
 y_train <- label_matrix  # to_categorical(label_matrix, num_classes = 3)
 
-# Check shapes of the input and labels
-cat("Shape of input images:", dim(x_train), "\n")
+
+
+
+
 cat("Shape of labels:", dim(y_train), "\n")
 
 # Define the model
@@ -76,12 +83,24 @@ model <- keras_model_sequential() %>%
   layer_dense(units = 128, activation = 'relu') %>%
   layer_dense(units = 3, activation = 'softmax')
 
+
+
+custom_loss <-
+function(L, pi) {
+  return(-sum(tf$reduce_logsumexp(L + log(tf$maximum(pi, 1e-5)), axis=as.integer(1))))
+  #out <- out -tf$math$maximum(0,out) + tf$math$sqrt(out -tf$math$minimum(out,0)+1 )+1# doing the same thing as below
+  # but tensorflow do not like logical operation in cus tom loss
+
+  return(out)
+}
+
 # Compile the model
 model %>% compile(
-  loss = 'categorical_crossentropy',
+  loss = custom_loss,
   optimizer = 'adam',
   metrics = 'accuracy'
 )
+
 
 # Fit the model
 model %>% fit(x_train, y_train, epochs = 10, batch_size = 5)
