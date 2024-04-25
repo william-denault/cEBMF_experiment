@@ -149,8 +149,8 @@ print(plot_grid(p1,p2,p3,p4,
 
 cEBMF.obj <- file_pc$fit_custom
 
-
-
+x=file_pc$x
+y=file_pc$y
 
 df_prior <-  data.frame(x=x,y=y, pi0 = exp(cEBMF.obj$check_l_prior[[1]][,1]))
 P_prior_1 <- ggplot(df_prior, aes(x,y,col=pi0))+
