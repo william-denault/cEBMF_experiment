@@ -51,7 +51,7 @@ P1 <- ggplot(df_simu[-which(df_simu$Method=="cEBMF0"),], aes(x=Method, y=RMSE, c
         strip.background = element_rect(fill = "white")) +
 
   xlab("")+
-  ggtitle("Tiled  bi-clustering model")+
+  ggtitle("Tiled clustering model")+
   scale_y_log10()
 P1
  ggsave(P1, file="plot/tiling_simu.pdf",
@@ -84,7 +84,7 @@ for ( i in 1:nrow(summary_data) ){
 
 
 # Create the plot
-ggplot(summary_data, aes(x = Method, y = mean, color=Method)) +
+P11<-ggplot(summary_data, aes(x = Method, y = mean, color=Method)) +
   geom_point() +  # or geom_bar(stat = "identity") for bars representing the mean
   geom_errorbar(aes(ymin = mean - se, ymax = mean + se), width = 0.2) +
   facet_wrap(~noise_level, scale='free', labeller = as_labeller(function(x) paste("noise sd =", x))) +
@@ -98,6 +98,11 @@ ggplot(summary_data, aes(x = Method, y = mean, color=Method)) +
         strip.background = element_rect(fill = "white")) +
   geom_hline(aes(yintercept = hline), linetype = "dashed", color = "black") +
   xlab("")+
-  ggtitle("Tiled  bi-clustering model")+
+  ggtitle("Tiled clustering model")+
   scale_y_log10()
-
+P11
+ggsave(P11, file="plot/tiling_simu_bar.pdf",
+       width = 29.7,
+       height = 21,
+       units = "cm"
+)
