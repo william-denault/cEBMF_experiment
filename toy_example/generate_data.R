@@ -541,4 +541,4 @@ fit_custom<- cEBMF.obj
                  fit_default=fit_default,
                  LIBD=LIBD
  )
-# save(file_pc, file = "toy_example/fit_plot_Neurips.RData")
+save(file_pc, file = "toy_example/fit_plot_Neurips.RData")
