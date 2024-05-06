@@ -84,15 +84,12 @@ p4 <- ggplot(pdat4,aes(x = pca,y = flashier)) +
 
 print(plot_grid(p1,p2,p3,p4,nrow = 2,ncol = 2))
 
-
-
-
 L <-file_pc$fit_custom$loading[,1:2]
 colnames(L) <- c("loading1","loading2")
 pdat3 <- cbind(sim,L)
 pdat3 <- pdat3[order(pdat3$cluster,decreasing = TRUE),]
 p11 <- ggplot(pdat3,aes(x = loading1,y = loading2,color = cluster)) +
-  geom_point(show.legend = FALSE, alpha=0.5) +
+  geom_point(shape = 1) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "cEBMF") +
   theme_cowplot(font_size = 10)
@@ -103,25 +100,23 @@ colnames(L) <- c("loading2","loading3")
 pdat3 <- cbind(sim,L)
 pdat3 <- pdat3[order(pdat3$cluster,decreasing = TRUE),]
 p12 <- ggplot(pdat3,aes(x = loading2,y = loading3,color = cluster)) +
-  geom_point(show.legend = FALSE, alpha=0.5) +
+  geom_point(shape = 1) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "cEBMF") +
   theme_cowplot(font_size = 10)
 p12
 
+plot_grid(p11,p12)
 
-
-
-
-
+# Spatial PCA.
 L <-t(file_pc$LIBD@SpatialPCs[1:2,])
 colnames(L) <- c("PC1","PC2")
 pdat21 <- cbind(sim,L)
 pdat21 <- pdat21[order(pdat21$cluster,decreasing = TRUE),]
 p21 <- ggplot(pdat21,aes(x = PC1,y = PC2,color = cluster)) +
-  geom_point(show.legend = FALSE, alpha=0.5) +
+  geom_point() +
   scale_color_manual(values = cluster_colors) +
-  labs(title = "spaPCA") +
+  labs(title = "spatial PCA") +
   theme_cowplot(font_size = 10)
 p21
 
@@ -143,7 +138,7 @@ print(plot_grid(p1,p2,p3,p4,
                 p21,p22,
                  ncol = 2))
 
-
+plot_grid(p1,p2,p3,p21,nrow = 2,ncol = 2)
 
 #prior plot
 
@@ -188,11 +183,11 @@ P_prior_3 <- ggplot(df_prior, aes(x,y,col=pi0))+
   geom_hline(yintercept = 0.66)+
   geom_vline(xintercept = 0.66)+
   geom_vline(xintercept = 0.33)+
-  theme_minimal()+theme( axis.text.y=element_blank(),
-
-                         axis.ticks.y=element_blank(),
-                         axis.text.x=element_blank(),
-                         axis.ticks.x=element_blank())
+  theme_cowplot(font_size = 10) +
+  theme( axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(),
+        axis.text.x=element_blank(),
+        axis.ticks.x=element_blank())
 P_prior_3
 
 print(plot_grid(P_prior_1,P_prior_2,P_prior_3,

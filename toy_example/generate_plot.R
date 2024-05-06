@@ -1,4 +1,4 @@
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/toy_example/fit_plot_Neurips.RData")
+load("fit_plot_Neurips.RData")
 x= file_pc$x
 y= file_pc$y
 
