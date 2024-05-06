@@ -147,11 +147,13 @@ print(table(true = sim$cluster,est = res$cluster))
 library(flashier)
 
 
-fit_default <-   flash_init(Z ) %>%
 
+fit_default <-   flash_init(Z ) %>%
+  flash_factors_init(
+                     list(pca$x[,1:3],pca$rotation[,1:3]))%>%
   flash_set_verbose(0) %>%
   flash_greedy(
-    ebnm_fn = c(ebnm_point_exponential, ebnm_ash)
+    ebnm_fn = c(ebnm_ash, ebnm_ash)
   )
 
 library(keras)
@@ -264,7 +266,7 @@ maxit_como  = 2
 
 
 param_como.x  = list(max_class=10,mnreg_type="keras",
-                     prior="mix_exp" ,
+                     prior="mix_norm" ,
                      epoch     =150,
                      batch_size= 1000)
 param_como.y  = list(max_class=10,mnreg_type="constant_mnreg",
@@ -401,7 +403,7 @@ P21 <-ggplot(df, aes ( x,y, col =  L  ))+
 
 
 
-df <- data.frame(x=x,y=y, L=0* fit_default$L_pm[,1])
+df <- data.frame(x=x,y=y, L= fit_default$L_pm[,2])
 P22 <-ggplot(df, aes ( x,y, col = L ))+
   geom_point(size=2)+
   scale_color_gradient2(low = "blue", mid = "grey", high = "red", midpoint = 0) +
@@ -450,7 +452,7 @@ P31 <-ggplot(df, aes ( x,y, col = abs( L)  ))+
                                      axis.ticks.x=element_blank())
 
 
-df <- data.frame(x=x,y=y, L= 0* fit_default$L_pm[,1])
+df <- data.frame(x=x,y=y, L=   fit_default$L_pm[,3])
 P32 <-ggplot(df, aes ( x,y, col = L ))+
   geom_point(size=2)+
   scale_color_gradient2(low = "blue", mid = "grey", high = "red", midpoint = 0) +
@@ -520,11 +522,11 @@ ggsave(fit_factor , file="Fig_tilling201.pdf",
        height = 25,
        units = "cm"
 )
-#ggsave(fit_factor , file="Fig_tilling2.pdf",
-#       width =21 ,
-#       height = 25,
-#       units = "cm"
-#)
+ ggsave(fit_factor , file="Fig_tilling2.pdf",
+        width =21 ,
+        height = 25,
+        units = "cm"
+ )
 
 hist(cEBMF.obj$loading
      [,c(1:3)], nclass = 100)
@@ -539,4 +541,4 @@ fit_custom<- cEBMF.obj
                  fit_default=fit_default,
                  LIBD=LIBD
  )
- save(file_pc, file = "toy_example/fit_plot_Neurips.RData")
+# save(file_pc, file = "toy_example/fit_plot_Neurips.RData")
