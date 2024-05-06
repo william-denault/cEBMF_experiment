@@ -1,8 +1,9 @@
 #analyse_slice <- function(i){
 
 
- for ( i in 7:12){#batch size 1500 1500 for the 2 first one
-   #1700 for the third one
+  for ( i in c(1:2,4,6:7,9:12)){#batch size 1500 1500 for the 2 first one
+
+      #1700 for the third one
   # 3 and 5 are problematic
   library(keras)
   library(tensorflow)
@@ -12,7 +13,7 @@
   library(fclust)
   library(scatterpie)
   library(gridExtra)
-
+   library(NNLM)
 
   sample_names=c("151507", "151508", "151509", "151510", "151669", "151670", "151671" ,"151672","151673", "151674" ,"151675" ,"151676")
   # Here we take the 9th sample as example, in total there are 12 samples (numbered as 1-12), the user can test on other samples if needed.
@@ -41,7 +42,7 @@
 
 
   library(softImpute)
-  l2_reg=0.1
+  l2_reg=0.2
   Y <- t(t(tt0) - apply(tt0,2,min))
   X_l =X
 
@@ -72,7 +73,7 @@
   mnreg_type="keras"
   K=3
   type_noise='column_wise'
-  init_type="flashier_NMF"
+  init_type="udv_si_svd"#"flashier_NMF"
   maxit=5
   tol=1e-3
 
@@ -82,7 +83,7 @@
 
   param_como.x  = list(max_class=10,mnreg_type="keras",
                        prior="mix_exp" ,
-                       epoch     =150,
+                       epoch     =50,
                        batch_size= 1500)
   param_como.y  = list(max_class=10,mnreg_type="constant_mnreg",
                        prior="mix_exp"  )
@@ -100,36 +101,35 @@
                                    maxit_como    = 1,
                                    param_nnet.x  = param_nnet.x,
                                    param_como2   = param_como2,
-                                   param_susie   = param_susie )
+                                   param_susie   = param_susie,
+                                   check_l_prior = TRUE )
 
 
-  for(k in 1:clusterNum[i]){
+  fit_nmf <- nnmf(tt0,k = clusterNum[i],method = "scd",loss = "mse",verbose = 0,
+                  n.threads = 2,rel.tol = 1e-8,max.iter = 100)
 
-    cEBMF.obj$factor[,k] <- apply(tt0[which(truth==unique(truth)[k]),],2,mean)
-  }
+
+
+  # NMF
+  #
 
   fit_flash <- flash_init(tt0, var_type = 2, S=0.01)
-  fit_flash <- flash_factors_init(fit_flash,
-                                  list(cEBMF.obj$loading,cEBMF.obj$factor),
-                                  ebnm_fn = c(ebnm_point_exponential, ebnm_point_exponential))
+   fit_flash <- flash_factors_init(fit_flash,
+                                  list(abs(cEBMF.obj$loading),abs(cEBMF.obj$factor)),
+                               ebnm_fn = c(ebnm_point_exponential, ebnm_point_exponential))
   fit_flash <- flash_backfit(fit_flash)
   fit_default<-fit_flash
 
 
 
   hist(cEBMF.obj$factor)
-  for (o in 1:3) {
+  for (o in 1:75) {#5 is good
     cEBMF.obj <- comoR:::cEBMF_iter  (cEBMF.obj)
     cEBMF.obj <- comoR:::out_prep.cEBMF(cEBMF.obj)
     # save(cEBMF.obj, file=paste0( "C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_RCC_experiments/data/res_cebmf/fit_cebmf_",i,".RData"))
   }
 
 
-  library(NNLM)
-  # NMF
-  #
-  fit_nmf <- nnmf(tt0,k = clusterNum[i],method = "scd",loss = "mse",verbose = 0,
-                  n.threads = 2,rel.tol = 1e-8,max.iter = 100)
 
 
   fit_nmf$W<- fit_nmf$W+1e-8
@@ -165,11 +165,13 @@
   library(scatterpie)
   library(gridExtra)
   fit_default$L_pm <- fit_default$L_pm+1e-8
+  fit_default$L_pm <- abs(fit_default$L_pm+1e-8)
+
   W <- fit_default$L_pm+1e-8
   W <- W / rowSums(W)
 
 
-  prop <-  W
+  prop <- abs(W)
 
   if (length(which(is.na(n_truth)))>0){
     res_ebnm <- Fclust.compare( n_truth[-which(is.na(truth))],
@@ -178,6 +180,8 @@
 
     res_ebnm <- Fclust.compare(n_truth,   prop)
   }
+
+
 
   my_col= c("#9C9EDE" ,"#5CB85C" ,"#E377C2", "#4DBBD5" ,"#FED439" ,"#FF9896", "#FFDC91")
 
@@ -216,7 +220,7 @@
     P0 <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d0, cols=c("A", "B", "C", "D", "E", "F", "G"),
                                      pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =c("#9C9EDE" ,"#5CB85C" ,"#E377C2", "#4DBBD5" ,"#FED439" ,"#FF9896", "#FFDC91"))+
-      ggtitle("Ground truth")+theme( axis.text.y=element_blank(),
+      ggtitle("Human labeled")+theme( axis.text.y=element_blank(),
                                      axis.ticks.y=element_blank(),
                                      axis.text.x=element_blank(),
                                      axis.ticks.x=element_blank(),
@@ -236,7 +240,7 @@
     P1  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(res$loading)] ,
                                       pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =my_col[1:ncol(res$loading)])+
-      ggtitle(paste0("cEBNMF, ARI score= ", round(res_cebnm[1], digits = 2) ))+theme( axis.text.y=element_blank(),
+      ggtitle(paste0("cEBNMF" ))+theme( axis.text.y=element_blank(),
                                                                                       axis.ticks.y=element_blank(),
                                                                                       axis.text.x=element_blank(),
                                                                                       axis.ticks.x=element_blank(),
@@ -256,7 +260,7 @@
     P2  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(fit_default$L_pm)] ,
                                       pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =my_col[1:ncol(fit_default$L_pm)])+
-      ggtitle(paste0("EBNMF, ARI score= ", round(res_ebnm[1], digits = 2) ))+theme( axis.text.y=element_blank(),
+      ggtitle(paste0("EBNMF" ))+theme( axis.text.y=element_blank(),
                                                                                     axis.ticks.y=element_blank(),
                                                                                     axis.text.x=element_blank(),
                                                                                     axis.ticks.x=element_blank(),
@@ -277,27 +281,29 @@
     P3  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(W)] ,
                                       pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =my_col[1:ncol(W)])+
-      ggtitle(paste0("NMF, ARI score= ", round(res_NMF[1], digits = 2) ))+theme( axis.text.y=element_blank(),
+      ggtitle(paste0("NMF"  ))+theme( axis.text.y=element_blank(),
                                                                                  axis.ticks.y=element_blank(),
                                                                                  axis.text.x=element_blank(),
                                                                                  axis.ticks.x=element_blank(),
                                                                                  legend.position = "none")
 
   }else{
+    d0 <- data.frame(x=loc[,1], y=loc[,2])
     d0$A <- ifelse(truth=="Layer1", 1, 0)
     d0$B <- ifelse(truth=="Layer2", 1, 0)
     d0$C <-  ifelse(truth=="Layer3", 1, 0)
     d0$D <-  ifelse(truth=="Layer4", 1, 0)
     d0$E <-  ifelse(truth=="Layer5", 1, 0)
-    P0 <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d0, cols=c("A", "B", "C", "D", "E" ),
+    d0$F <-  ifelse(truth=="Layer6", 1, 0)
+    d0$G <-  ifelse(truth=="WM", 1, 0)
+    P0 <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d0, cols=c("A", "B", "C", "D", "E", "F", "G"),
                                      pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
-      scale_fill_manual(values =c("#9C9EDE" ,"#5CB85C" ,"#E377C2", "#4DBBD5" ,"#FED439"  ))+
-      ggtitle("Ground truth")+theme( axis.text.y=element_blank(),
+      scale_fill_manual(values =c("#9C9EDE" ,"#5CB85C" ,"#E377C2", "#4DBBD5" ,"#FED439" ,"#FF9896", "#FFDC91"))+
+      ggtitle("Human labeled")+theme( axis.text.y=element_blank(),
                                      axis.ticks.y=element_blank(),
                                      axis.text.x=element_blank(),
                                      axis.ticks.x=element_blank(),
                                      legend.position = "none")
-
 
 
 
@@ -314,7 +320,7 @@
     P1  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(res$loading)] ,
                                       pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =my_col[1:ncol(res$loading)])+
-      ggtitle(paste0("cEBNMF, ARI score= ", round(res_cebnm[1], digits = 2) ))+theme( axis.text.y=element_blank(),
+      ggtitle(paste0("cEBNMF " )  )+theme( axis.text.y=element_blank(),
                                                                                       axis.ticks.y=element_blank(),
                                                                                       axis.text.x=element_blank(),
                                                                                       axis.ticks.x=element_blank(),
@@ -339,7 +345,7 @@
     P2  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(fit_default$L_pm)] ,
                                       pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =my_col[1:ncol(fit_default$L_pm)])+
-      ggtitle(paste0("EBNMF, ARI score= ", round(res_ebnm[1], digits = 2) ))+theme( axis.text.y=element_blank(),
+      ggtitle(paste0("EBNMF " )  )+theme( axis.text.y=element_blank(),
                                                                                     axis.ticks.y=element_blank(),
                                                                                     axis.text.x=element_blank(),
                                                                                     axis.ticks.x=element_blank(),
@@ -360,7 +366,7 @@
     P3  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(W)] ,
                                       pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
       scale_fill_manual(values =my_col[1:ncol(W)])+
-      ggtitle(paste0("NMF, ARI score= ", round(res_NMF[1], digits = 2) ))+theme( axis.text.y=element_blank(),
+      ggtitle(paste0("NMF "  ))+theme( axis.text.y=element_blank(),
                                                                                  axis.ticks.y=element_blank(),
                                                                                  axis.text.x=element_blank(),
                                                                                  axis.ticks.x=element_blank(),
