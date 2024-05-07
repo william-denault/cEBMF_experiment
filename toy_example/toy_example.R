@@ -1,9 +1,10 @@
-# Peter's attempt at an interesting analysis of the "toy" data set.
+# Peter's attempt at an "interesting" analysis of the "toy" data set.
 library(NNLM)
 library(ggplot2)
 library(cowplot)
 library(Rtsne)
 library(ebnm)
+library(flashier)
 library(fastTopics)
 
 set.seed(1)
@@ -23,11 +24,15 @@ p1 <- ggplot(sim,aes(x = x,y = y,color = cluster)) +
   labs(title = "ground truth") +
   theme_cowplot(font_size = 10)
 
+n    <- nrow(Z)
+rows <- sample(n)
+
 # PCA
 # ---
 pca <- prcomp(Z)
 pdat2 <- cbind(sim,pca$x[,1:2])
 pdat2 <- pdat2[order(pdat2$cluster,decreasing = TRUE),]
+pdat2 <- pdat2[rows,]
 p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
@@ -35,19 +40,74 @@ p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
   theme_cowplot(font_size = 10)
 
 # NMF
+# ---
+set.seed(1)
+nmf <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
+            rel.tol = 1e-8,max.iter = 100)
+W <- nmf$W
+out <- prcomp(W)
+pdat3 <- cbind(sim,out$x[,1:2] + matrix(rnorm(2*n,sd = 1),n,2))
+pdat3 <- pdat3[rows,]
+p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
+  geom_point(show.legend = FALSE) +
+  scale_color_manual(values = cluster_colors) +
+  labs(title = "NMF") +
+  theme_cowplot(font_size = 10)
+
+# Spatial PCA
+# -----------
+L <- t(file_pc$LIBD@SpatialPCs[1:2,])
+colnames(L) <- c("PC1","PC2")
+pdat4 <- cbind(sim,L)
+pdat4 <- pdat4[rows,]
+p4 <- ggplot(pdat4,aes(x = PC1,y = PC2,color = cluster)) +
+  geom_point(show.legend = FALSE) +
+  scale_color_manual(values = cluster_colors) +
+  labs(title = "spatial PCA") +
+  theme_cowplot(font_size = 10)
+
+# EBNMF
+# -----
+set.seed(1)
+nmf0 <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
+             rel.tol = 1e-8,max.iter = 10)
+fl <- flash_init(Z,var_type = 0)
+fl <- flash_factors_init(fl,
+                         list(nmf0$W,t(nmf0$H)),
+                         ebnm_point_exponential)
+fl <- flash_backfit(fl,maxiter = 100,verbose = 0)
+L <- ldf(fl,type = "f")$L
+out <- prcomp(L)
+pdat5 <- cbind(sim,out$x[,1:2] + matrix(rnorm(2*n,sd = 0.01),n,2))
+pdat5 <- pdat5[rows,]
+p5 <- ggplot(pdat5,aes(x = PC1,y = PC2,color = cluster)) +
+  geom_point(show.legend = FALSE) +
+  scale_color_manual(values = cluster_colors) +
+  labs(title = "EBNMF") +
+  theme_cowplot(font_size = 10)
+
+# covariate-moderated EBNMF
+# -------------------------
+W <- file_pc$fit_custom$loading
+W <- W / rowSums(W)
+out <- prcomp(W)
+pdat6 <- cbind(sim,out$x[,1:2] + matrix(rnorm(2*n,sd = 0.1),n,2))
+pdat6 <- pdat6[rows,]
+p6 <- ggplot(pdat6,aes(x = PC1,y = PC2,color = cluster)) +
+  geom_point(show.legend = FALSE) +
+  scale_color_manual(values = cluster_colors) +
+  labs(title = "cEBNMF") +
+  theme_cowplot(font_size = 10)
+
+print(plot_grid(p1,p2,p4,p3,p5,p6,nrow = 2,ncol = 3))
+
+# ------------------------------------------------------------------------
 #
-# fit <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
-#             n.threads = 2,rel.tol = 1e-8,max.iter = 100)
-# W <- fit$W
-# W <- W / rowSums(W)
-# out <- prcomp(W)
-# pdat3 <- cbind(sim,out$x[,1:2])
-# p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
-#   geom_point() +
-#   scale_color_manual(values = cluster_colors) +
-#   labs(title = "NMF") +
-#   theme_cowplot(font_size = 10)
+#                           END OF TOY EXAMPLE
 #
+# ------------------------------------------------------------------------
+
+stop()
 
 # flashier
 # --------
@@ -108,29 +168,17 @@ p12
 
 plot_grid(p11,p12)
 
-# Spatial PCA.
-L <-t(file_pc$LIBD@SpatialPCs[1:2,])
-colnames(L) <- c("PC1","PC2")
-pdat21 <- cbind(sim,L)
-pdat21 <- pdat21[order(pdat21$cluster,decreasing = TRUE),]
-p21 <- ggplot(pdat21,aes(x = PC1,y = PC2,color = cluster)) +
-  geom_point() +
-  scale_color_manual(values = cluster_colors) +
-  labs(title = "spatial PCA") +
-  theme_cowplot(font_size = 10)
-p21
 
-
-L <-t(file_pc$LIBD@SpatialPCs[2:3,])
-colnames(L) <- c("PC2","PC3")
-pdat22 <- cbind(sim,L)
-pdat22 <- pdat22[order(pdat22$cluster,decreasing = TRUE),]
-p22 <- ggplot(pdat22,aes(x = PC2,y = PC3,color = cluster)) +
-  geom_point(show.legend = FALSE, alpha=0.5) +
-  scale_color_manual(values = cluster_colors) +
-  labs(title = "spaPCA") +
-  theme_cowplot(font_size = 10)
-p22
+## L <-t(file_pc$LIBD@SpatialPCs[2:3,])
+## colnames(L) <- c("PC2","PC3")
+## pdat22 <- cbind(sim,L)
+## pdat22 <- pdat22[order(pdat22$cluster,decreasing = TRUE),]
+## p22 <- ggplot(pdat22,aes(x = PC2,y = PC3,color = cluster)) +
+##   geom_point(show.legend = FALSE, alpha=0.5) +
+##   scale_color_manual(values = cluster_colors) +
+##   labs(title = "spaPCA") +
+##   theme_cowplot(font_size = 10)
+## p22
 
 print(plot_grid(p1,p2,p3,p4,
 
