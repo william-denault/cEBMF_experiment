@@ -99,7 +99,36 @@ p6 <- ggplot(pdat6,aes(x = PC1,y = PC2,color = cluster)) +
   labs(title = "cEBNMF") +
   theme_cowplot(font_size = 10)
 
-print(plot_grid(p1,p2,p4,p3,p5,p6,nrow = 2,ncol = 3))
+# The prior in cEBNMF, in detail.
+pdat7 <- data.frame(x = x,y = y,
+                    pi0 = exp(cEBMF.obj$check_l_prior[[1]][,1]))
+pdat8 <- data.frame(x = x,y = y,
+                    pi0 = exp(cEBMF.obj$check_l_prior[[2]][,1]))
+pdat9 <- data.frame(x = x,y = y,
+                    pi0 = exp(cEBMF.obj$check_l_prior[[3]][,1]))
+p7 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
+  geom_point(show.legend = FALSE) +
+  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
+                        midpoint = 0.5) +
+  ggtitle("prior, first factor") +
+  theme_cowplot(font_size = 10)
+p8 <- ggplot(pdat8,aes(x = x,y = y,color = pi0))+
+  geom_point(show.legend = FALSE) +
+  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
+                        midpoint = 0.5) +
+  ggtitle("prior, second factor") +
+  theme_cowplot(font_size = 10)
+p9 <- ggplot(pdat9,aes(x = x,y = y,color = pi0))+
+  geom_point(show.legend = FALSE) +
+  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
+                        midpoint = 0.5) +
+  ggtitle("prior, third factor") +
+  theme_cowplot(font_size = 10)
+
+print(plot_grid(p1,p2,p4,
+                p3,p5,p6,
+                p7,p8,p9,
+                nrow = 3,ncol = 3))
 
 # ------------------------------------------------------------------------
 #
