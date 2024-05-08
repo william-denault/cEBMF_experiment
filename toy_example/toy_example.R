@@ -126,21 +126,27 @@ p7 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
   theme_cowplot(font_size = 10)
 p8 <- ggplot(pdat8,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
-  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
+  scale_color_gradient2(low = "red",mid = "gold",high = "deepskyblue",
                         midpoint = 0.5) +
   ggtitle("prior, second factor") +
   theme_cowplot(font_size = 10)
 p9 <- ggplot(pdat9,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
-  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
+  scale_color_gradient2(low = "red",mid = "gold",high = "deepskyblue",
                         midpoint = 0.5) +
   ggtitle("prior, third factor") +
+  theme_cowplot(font_size = 10)
+p10 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
+  geom_point(show.legend = TRUE) +
+  scale_color_gradient2(low = "red",mid = "gold",high = "deepskyblue",
+                        midpoint = 0.5) +
   theme_cowplot(font_size = 10)
 
 print(plot_grid(p1,p2,p4,
                 p3,p5,p6,
                 p7,p8,p9,
-                nrow = 3,ncol = 3))
+                p10,
+                nrow = 4,ncol = 3))
 
 # ------------------------------------------------------------------------
 #
