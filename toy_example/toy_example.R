@@ -12,6 +12,18 @@ set.seed(1)
 # Prepare and plot the data.
 cluster_colors <- c("darkorange","dodgerblue","darkblue")
 load("fit_plot_Neurips.RData")
+
+
+
+x= file_pc$x
+y= file_pc$y
+
+L= file_pc$L
+res= file_pc$fit_custom
+cEBMF.obj = res
+fit_default=file_pc$fit_default
+LIBD=file_pc$LIBD
+
 Z <- file_pc$Z
 Z <- scale(Z,center = TRUE,scale = TRUE)
 sim <- with(file_pc,data.frame(x = x,y = y,cluster = 0))
@@ -101,11 +113,11 @@ p6 <- ggplot(pdat6,aes(x = PC1,y = PC2,color = cluster)) +
 
 # The prior in cEBNMF, in detail.
 pdat7 <- data.frame(x = x,y = y,
-                    pi0 = exp(cEBMF.obj$check_l_prior[[1]][,1]))
+                    pi0 = 1-exp(cEBMF.obj$check_l_prior[[1]][,1]))
 pdat8 <- data.frame(x = x,y = y,
-                    pi0 = exp(cEBMF.obj$check_l_prior[[2]][,1]))
+                    pi0 = 1-exp(cEBMF.obj$check_l_prior[[2]][,1]))
 pdat9 <- data.frame(x = x,y = y,
-                    pi0 = exp(cEBMF.obj$check_l_prior[[3]][,1]))
+                    pi0 =1-exp(cEBMF.obj$check_l_prior[[3]][,1]))
 p7 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
   scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
