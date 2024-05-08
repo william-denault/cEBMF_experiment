@@ -142,11 +142,13 @@ p10 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
                         midpoint = 0.5) +
   theme_cowplot(font_size = 10)
 
-print(plot_grid(p1,p2,p4,
-                p3,p5,p6,
-                p7,p8,p9,
-                p10,
-                nrow = 4,ncol = 3))
+ggsave("toy_example.pdf",
+       plot_grid(p1,p2,p4,
+                 p3,p5,p6,
+                 p7,p8,p9,
+                 p10,
+                 nrow = 4,ncol = 3),
+       height = 8,width = 6)
 
 # ------------------------------------------------------------------------
 #
