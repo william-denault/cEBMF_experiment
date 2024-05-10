@@ -1,5 +1,7 @@
 library(Matrix)
+library(reshape2)
 library(ggplot2)
+library(cowplot)
 library(fclust)
 library(scatterpie)
 library(gridExtra)
@@ -7,6 +9,30 @@ library(NNLM)
 library(flashier)
 library(softImpute)
 library(SpatialPCA)
+
+# Maps the estimated memberships onto the (x,y) coordinates using the
+# "scatterpie" package.
+plot_memberships_on_slice <- function (W, xy, title = "", min_prop = 0.05,
+                                       pie_scale = 0.35, font_size = 12,
+                                       colors = factor_colors) {
+  W <- W / rowSums(W)
+  W[W < min_prop] <- 0
+  W <- W / rowSums(W)
+  k <- ncol(W)
+  ks <- paste0("k",1:k)
+  colnames(W) <- ks
+  dat <- cbind(xy,W)
+  dat <- as.data.frame(dat,stringsAsFactors = FALSE)
+  return(ggplot(dat,aes(x = x,y = y)) +
+         geom_scatterpie(data = dat,cols = ks,pie_scale = pie_scale,
+                         color = NA) +
+         coord_fixed() +
+         scale_fill_manual(values = colors) +
+         theme_cowplot(font_size = font_size) +
+         theme(panel.background = element_rect(fill = "black",color = NA),
+               plot.title = element_text(face = "plain",size = font_size)) +
+         labs(x = "",y = "",fill = "k",title = title))
+}
 
 # There are 12 different samples.
 i = 9
@@ -20,31 +46,55 @@ sample_names=c("151507", "151508", "151509", "151510", "151669",
 # each sample has different ground truth cluster number
 clusterNum=c(7,7,7,7,5,5,5,5,7,7,7,7)
 
+factor_colors <- c("#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00",
+                   "#ffff33","#a65628")
+
 datadir <- "/project2/mstephens/DLPFC/data/"
 load(paste0(datadir,"/DLPFC/LIBD_sample",i,".RData"))
 load(paste0(datadir,"/res_spatial_PCA/run_spatial_DLPFC",i,".RData"))
-tt = as.matrix(count_sub)
-truth = KRM_manual_layers_sub$layer_guess_reordered[
+truth <- KRM_manual_layers_sub$layer_guess_reordered[
   match(colnames(LIBD@normalized_expr),colnames(count_sub))]
 
-# tt0 is the n x m matrix of transformed/normalized counts.
+# X is the n x m matrix of transformed/normalized counts.
 # n = number of cells
 # m = number of genes
-loc = LIBD@location
-tt0 = t(as.matrix(LIBD@normalized_expr))
-X = loc
-#define comoR object
+loc <- LIBD@location
+colnames(loc) <- c("x","y")
+X <- t(as.matrix(LIBD@normalized_expr))
+X <- X - min(X) 
 
 l2_reg = 0.2
-# Y <- t(t(tt0) - apply(tt0,2,min))
 
 # NMF and flashier.
 set.seed(1)
-fit_nmf <- nnmf(tt0,k = clusterNum[i],method = "scd",loss = "mse",
-                verbose = 0,n.threads = 4,rel.tol = 1e-8,max.iter = 100)
-fit_nmf_init <- nnmf(Y,k = clusterNum[i],method = "scd",loss = "mse",
-                     verbose = 0,n.threads = 2,rel.tol = 1e-8,max.iter = 10)
-fit_flash <- flash_init(Y, var_type = 2, S=0.01)
+k   <- 5
+n   <- nrow(X)
+m   <- ncol(X)
+fl0 <- flash(X,greedy_Kmax = 1,ebnm_fn = ebnm_point_exponential,
+             S = 0.01,var_type = 2)
+W0  <- cbind(fl0$L_pm,matrix(runif(n*k),n,k))
+H0  <- t(cbind(fl0$F_pm,matrix(runif(m*k),m,k)))
+nmf <- nnmf(X,k = k + 1,method = "scd",loss = "mse",n.threads = 4,
+            init = list(W = W0,H = H0),max.iter = 50,rel.tol = 1e-8,
+            verbose = 2)
+
+truth <- as.character(truth)
+truth[is.na(truth)] <- "NA"
+truth <- factor(truth,levels = c(paste0("Layer",1:6),"WM","NA"))
+W_true <- model.matrix(~0 + x,data.frame(x = truth))
+rownames(W_true) <- rownames(X)
+colnames(W_true) <- levels(truth)
+
+
+p1 <- plot_memberships_on_slice(W_true,loc,title = "human labeled",
+                                colors = c(factor_colors,"black"))
+p2 <- plot_memberships_on_slice(nmf$W[,-1],loc,title = "NMF")
+ggsave("plots.pdf",
+       plot_grid(p1,p2,nrow = 1,ncol = 2),
+       height = 4,width = 8)
+
+stop()
+
 fit_flash <- flash_factors_init(fit_flash,
                                 list(fit_nmf_init$W, t(fit_nmf_init$H)),
                                 ebnm_fn = c(ebnm_point_exponential, ebnm_point_exponential))
@@ -163,8 +213,11 @@ if (clusterNum[i]==7){
   d <- cbind(d, tdf2)
   d <- data.frame(d)
 
-  P3  <- ggplot() + geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(W)] ,
-                                    pie_scale=0.35, color=NA) + coord_fixed()+ theme_minimal()  +
+  P3  <- ggplot() +
+    geom_scatterpie(aes(x=x, y=y), data=d, cols=LETTERS[1:ncol(W)] ,
+                    pie_scale=0.35, color=NA) +
+                      coord_fixed() +
+                        theme_minimal()  +
     scale_fill_manual(values =my_col[1:ncol(W)])+
     ggtitle(paste0("NMF"  ))+theme( axis.text.y=element_blank(),
                                     axis.ticks.y=element_blank(),
