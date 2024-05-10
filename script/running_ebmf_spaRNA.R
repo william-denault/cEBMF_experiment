@@ -72,7 +72,7 @@ truth <- as.character(truth)
 truth[is.na(truth)] <- "NA"
 truth <- factor(truth,levels = c(paste0("Layer",1:6),"WM","NA"))
 W_true <- model.matrix(~0 + x,data.frame(x = truth))
-Crownames(W_true) <- rownames(X)
+rownames(W_true) <- rownames(X)
 colnames(W_true) <- levels(truth)
 
 # NMF and flashier.
