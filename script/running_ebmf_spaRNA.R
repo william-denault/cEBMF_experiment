@@ -95,12 +95,23 @@ fl <- flash_factors_init(fl,
                          list(nmf0$W,t(nmf0$H)),
                          ebnm_point_exponential)
 fl <- flash_backfit(fl,maxiter = 100,verbose = 3)
-L  <- ldf(fl,type = "i")$L
+
+# Extract the NMF membership matrix,
+fl_nmf <- flash_init(X,S = 0.01,var_type = 2)
+fl_nmf <- flash_factors_init(fl_nmf,
+                             list(nmf$W,t(nmf$H)),
+                             ebnm_point_exponential)
+res <- ldf(fl_nmf,type = "1")
+W   <- with(res,L %*% diag(D))
+
+# Extract the flashier membership matrix.
+res <- ldf(fl,type = "1")
+L   <- with(res,L %*% diag(D))
 
 # Plot the results.
 p1 <- plot_memberships_on_slice(W_true,loc,title = "human labeled",
                                 colors = c(factor_colors7,"black"))
-p2 <- plot_memberships_on_slice(nmf$W[,-1],loc,title = "NMF")
+p2 <- plot_memberships_on_slice(W[,-1],loc,title = "NMF")
 p3 <- plot_memberships_on_slice(L[,-1],loc,title = "EBNMF")
 ggsave("plots.pdf",
        plot_grid(p1,p2,p3,nrow = 2,ncol = 2),
