@@ -10,11 +10,16 @@ library(flashier)
 library(softImpute)
 library(SpatialPCA)
 
+# These colors are from colorbrewer2.org.
+factor_colors5 <- c("#d95f02","#386cb0","#e7298a","#66a61e","#ffff99")
+factor_colors7 <- c("#66c2a5","#fc8d62","#8da0cb","#e78ac3","#a6d854",
+                    "#ffd92f","#e5c494")
+
 # Maps the estimated memberships onto the (x,y) coordinates using the
 # "scatterpie" package.
 plot_memberships_on_slice <- function (W, xy, title = "", min_prop = 0.05,
                                        pie_scale = 0.35, font_size = 12,
-                                       colors = factor_colors) {
+                                       colors = factor_colors5) {
   W <- W / rowSums(W)
   W[W < min_prop] <- 0
   W <- W / rowSums(W)
@@ -46,9 +51,6 @@ sample_names=c("151507", "151508", "151509", "151510", "151669",
 # each sample has different ground truth cluster number
 clusterNum=c(7,7,7,7,5,5,5,5,7,7,7,7)
 
-factor_colors <- c("#e41a1c","#377eb8","#4daf4a","#984ea3","#ff7f00",
-                   "#ffff33","#a65628")
-
 datadir <- "/project2/mstephens/DLPFC/data/"
 load(paste0(datadir,"/DLPFC/LIBD_sample",i,".RData"))
 load(paste0(datadir,"/res_spatial_PCA/run_spatial_DLPFC",i,".RData"))
@@ -65,6 +67,14 @@ X <- X - min(X)
 
 l2_reg = 0.2
 
+# Get the human labels as factors (W_true).
+truth <- as.character(truth)
+truth[is.na(truth)] <- "NA"
+truth <- factor(truth,levels = c(paste0("Layer",1:6),"WM","NA"))
+W_true <- model.matrix(~0 + x,data.frame(x = truth))
+Crownames(W_true) <- rownames(X)
+colnames(W_true) <- levels(truth)
+
 # NMF and flashier.
 set.seed(1)
 k   <- 5
@@ -74,24 +84,33 @@ fl0 <- flash(X,greedy_Kmax = 1,ebnm_fn = ebnm_point_exponential,
              S = 0.01,var_type = 2)
 W0  <- cbind(fl0$L_pm,matrix(runif(n*k),n,k))
 H0  <- t(cbind(fl0$F_pm,matrix(runif(m*k),m,k)))
+nmf0 <- nnmf(X,k = k + 1,method = "scd",loss = "mse",n.threads = 4,
+             init = list(W = W0,H = H0),max.iter = 4,rel.tol = 1e-8,
+             verbose = 2)
 nmf <- nnmf(X,k = k + 1,method = "scd",loss = "mse",n.threads = 4,
             init = list(W = W0,H = H0),max.iter = 50,rel.tol = 1e-8,
             verbose = 2)
+fl <- flash_init(X,S = 0.01,var_type = 2)
+fl <- flash_factors_init(fl,
+                         list(nmf0$W,t(nmf0$H)),
+                         ebnm_point_exponential)
+fl <- flash_backfit(fl,maxiter = 100,verbose = 3)
+L  <- ldf(fl,type = "i")$L
 
-truth <- as.character(truth)
-truth[is.na(truth)] <- "NA"
-truth <- factor(truth,levels = c(paste0("Layer",1:6),"WM","NA"))
-W_true <- model.matrix(~0 + x,data.frame(x = truth))
-rownames(W_true) <- rownames(X)
-colnames(W_true) <- levels(truth)
-
-
+# Plot the results.
 p1 <- plot_memberships_on_slice(W_true,loc,title = "human labeled",
-                                colors = c(factor_colors,"black"))
+                                colors = c(factor_colors7,"black"))
 p2 <- plot_memberships_on_slice(nmf$W[,-1],loc,title = "NMF")
+p3 <- plot_memberships_on_slice(L[,-1],loc,title = "EBNMF")
 ggsave("plots.pdf",
-       plot_grid(p1,p2,nrow = 1,ncol = 2),
-       height = 4,width = 8)
+       plot_grid(p1,p2,p3,nrow = 2,ncol = 2),
+       height = 8,width = 8)
+
+# ************************************************************************
+#
+#                            END OF MAIN ANALYSIS
+#
+# ************************************************************************
 
 stop()
 
