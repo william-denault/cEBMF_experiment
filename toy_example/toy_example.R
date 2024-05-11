@@ -58,7 +58,7 @@ nmf <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
             rel.tol = 1e-8,max.iter = 100)
 W <- nmf$W
 out <- prcomp(W)
-pdat3 <- cbind(sim,out$x[,1:2] + matrix(rnorm(2*n,sd = 1),n,2))
+pdat3 <- cbind(sim,out$x[,1:2]  )
 pdat3 <- pdat3[rows,]
 p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
@@ -90,7 +90,7 @@ fl <- flash_factors_init(fl,
 fl <- flash_backfit(fl,maxiter = 100,verbose = 0)
 L <- ldf(fl,type = "f")$L
 out <- prcomp(L)
-pdat5 <- cbind(sim,out$x[,1:2] + matrix(rnorm(2*n,sd = 0.01),n,2))
+pdat5 <- cbind(sim,out$x[,1:2] )
 pdat5 <- pdat5[rows,]
 p5 <- ggplot(pdat5,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
@@ -103,7 +103,7 @@ p5 <- ggplot(pdat5,aes(x = PC1,y = PC2,color = cluster)) +
 W <- file_pc$fit_custom$loading
 W <- W / rowSums(W)
 out <- prcomp(W)
-pdat6 <- cbind(sim,out$x[,1:2] + matrix(rnorm(2*n,sd = 0.1),n,2))
+pdat6 <- cbind(sim,out$x[,1:2] )
 pdat6 <- pdat6[rows,]
 p6 <- ggplot(pdat6,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
@@ -126,28 +126,24 @@ p7 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
   theme_cowplot(font_size = 10)
 p8 <- ggplot(pdat8,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
-  scale_color_gradient2(low = "red",mid = "gold",high = "deepskyblue",
+  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
                         midpoint = 0.5) +
   ggtitle("prior, second factor") +
   theme_cowplot(font_size = 10)
 p9 <- ggplot(pdat9,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
-  scale_color_gradient2(low = "red",mid = "gold",high = "deepskyblue",
+  scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
                         midpoint = 0.5) +
   ggtitle("prior, third factor") +
   theme_cowplot(font_size = 10)
-p10 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
-  geom_point(show.legend = TRUE) +
-  scale_color_gradient2(low = "red",mid = "gold",high = "deepskyblue",
-                        midpoint = 0.5) +
-  theme_cowplot(font_size = 10)
+
 
 ggsave("toy_example.pdf",
        plot_grid(p1,p2,p4,
                  p3,p5,p6,
                  p7,p8,p9,
-                 p10,
-                 nrow = 4,ncol = 3),
+
+                 nrow = 3,ncol = 3),
        height = 8,width = 6)
 
 # ------------------------------------------------------------------------
