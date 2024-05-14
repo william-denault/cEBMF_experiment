@@ -13,8 +13,6 @@ set.seed(1)
 cluster_colors <- c("darkorange","dodgerblue","darkblue")
 load("fit_plot_Neurips.RData")
 
-
-
 x= file_pc$x
 y= file_pc$y
 
@@ -51,21 +49,6 @@ p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
   labs(title = "PCA") +
   theme_cowplot(font_size = 10)
 
-# NMF
-# ---
-set.seed(1)
-nmf <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
-            rel.tol = 1e-8,max.iter = 100)
-W <- nmf$W
-out <- prcomp(W)
-pdat3 <- cbind(sim,out$x[,1:2]  )
-pdat3 <- pdat3[rows,]
-p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
-  geom_point(show.legend = FALSE) +
-  scale_color_manual(values = cluster_colors) +
-  labs(title = "NMF") +
-  theme_cowplot(font_size = 10)
-
 # Spatial PCA
 # -----------
 L <- t(file_pc$LIBD@SpatialPCs[1:2,])
@@ -76,6 +59,22 @@ p4 <- ggplot(pdat4,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "spatial PCA") +
+  theme_cowplot(font_size = 10)
+
+# NMF
+# ---
+set.seed(1)
+Z <- Z - min(Z)
+nmf <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
+            rel.tol = 1e-8,max.iter = 100)
+W <- nmf$W
+out <- prcomp(W)
+pdat3 <- cbind(sim,out$x[,1:2]  )
+pdat3 <- pdat3[rows,]
+p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
+  geom_point(show.legend = FALSE) +
+  scale_color_manual(values = cluster_colors) +
+  labs(title = "NMF") +
   theme_cowplot(font_size = 10)
 
 # EBNMF
@@ -136,7 +135,6 @@ p9 <- ggplot(pdat9,aes(x = x,y = y,color = pi0))+
                         midpoint = 0.5) +
   ggtitle("prior, third factor") +
   theme_cowplot(font_size = 10)
-
 
 ggsave("toy_example.pdf",
        plot_grid(p1,p2,p4,
