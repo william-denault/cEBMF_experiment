@@ -32,7 +32,7 @@ p1 <- ggplot(sim,aes(x = x,y = y,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors,) +
   labs(title = "ground truth") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 
 n    <- nrow(Z)
 rows <- sample(n)
@@ -47,7 +47,7 @@ p2 <- ggplot(pdat2,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "PCA") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 
 # Spatial PCA
 # -----------
@@ -59,7 +59,7 @@ p4 <- ggplot(pdat4,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "spatial PCA") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 
 # NMF
 # ---
@@ -75,7 +75,7 @@ p3 <- ggplot(pdat3,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
   labs(title = "NMF") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 
 # EBNMF
 # -----
@@ -85,7 +85,7 @@ nmf0 <- nnmf(Z,k = 3,method = "scd",loss = "mse",verbose = 0,
 fl <- flash_init(Z,var_type = 0)
 fl <- flash_factors_init(fl,
                          list(nmf0$W,t(nmf0$H)),
-                         ebnm_point_exponential)
+                         ebnm_fn = c(ebnm_point_exponential , ebnm_ash))# ebnm_point_exponential))
 fl <- flash_backfit(fl,maxiter = 100,verbose = 0)
 L <- ldf(fl,type = "f")$L
 out <- prcomp(L)
@@ -94,9 +94,9 @@ pdat5 <- pdat5[rows,]
 p5 <- ggplot(pdat5,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
-  labs(title = "EBNMF") +
-  theme_cowplot(font_size = 10)
-
+  labs(title = "EBSNMF") +
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
+p5
 # covariate-moderated EBNMF
 # -------------------------
 W <- file_pc$fit_custom$loading
@@ -107,8 +107,8 @@ pdat6 <- pdat6[rows,]
 p6 <- ggplot(pdat6,aes(x = PC1,y = PC2,color = cluster)) +
   geom_point(show.legend = FALSE) +
   scale_color_manual(values = cluster_colors) +
-  labs(title = "cEBNMF") +
-  theme_cowplot(font_size = 10)
+  labs(title = "cEBSNMF") +
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 
 # The prior in cEBNMF, in detail.
 pdat7 <- data.frame(x = x,y = y,
@@ -122,19 +122,19 @@ p7 <- ggplot(pdat7,aes(x = x,y = y,color = pi0))+
   scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
                         midpoint = 0.5) +
   ggtitle("prior, first factor") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 p8 <- ggplot(pdat8,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
   scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
                         midpoint = 0.5) +
   ggtitle("prior, second factor") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 p9 <- ggplot(pdat9,aes(x = x,y = y,color = pi0))+
   geom_point(show.legend = FALSE) +
   scale_color_gradient2(low = "deepskyblue",mid = "gold",high = "red",
                         midpoint = 0.5) +
   ggtitle("prior, third factor") +
-  theme_cowplot(font_size = 10)
+  theme_cowplot(font_size = 10)+ theme(aspect.ratio = 1)
 
 ggsave("toy_example.pdf",
        plot_grid(p1,p2,p4,
@@ -142,7 +142,7 @@ ggsave("toy_example.pdf",
                  p7,p8,p9,
 
                  nrow = 3,ncol = 3),
-       height = 8,width = 6)
+       height = 8,width = 8)
 
 # ------------------------------------------------------------------------
 #
@@ -158,8 +158,8 @@ library(flashier)
 ks <- 1:2
 fit_flash <- flash_init(Z,var_type = 0)
 fit_flash <- flash_factors_init(fit_flash,
-                           list(pca$x[,ks],pca$rotation[,ks]),
-                           ebnm_point_laplace)
+                                list(pca$x[,ks],pca$rotation[,ks]),
+                                ebnm_point_laplace)
 fit_flash <- flash_backfit(fit_flash)
 # fit_flash <- flash(Z,greedy_Kmax = 2,
 #                    ebnm_fn = ebnm_point_laplace,
@@ -227,7 +227,7 @@ print(plot_grid(p1,p2,p3,p4,
 
                 p11,p12,
                 p21,p22,
-                 ncol = 2))
+                ncol = 2))
 
 plot_grid(p1,p2,p3,p21,nrow = 2,ncol = 2)
 
@@ -276,11 +276,12 @@ P_prior_3 <- ggplot(df_prior, aes(x,y,col=pi0))+
   geom_vline(xintercept = 0.33)+
   theme_cowplot(font_size = 10) +
   theme( axis.text.y=element_blank(),
-        axis.ticks.y=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+         axis.ticks.y=element_blank(),
+         axis.text.x=element_blank(),
+         axis.ticks.x=element_blank())
 P_prior_3
 
 print(plot_grid(P_prior_1,P_prior_2,P_prior_3,
 
                 ncol = 3))
+
