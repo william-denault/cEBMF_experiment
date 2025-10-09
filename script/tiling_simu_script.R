@@ -59,57 +59,6 @@ tiling_sim <-  function(noise_level,seed=1){
   X_f = matrix(rnorm(2* ncol(Z)), ncol = 2)
 
 
-  l2_reg = 0.001
-
-  param_nnet.x =keras_model_sequential() %>%
-    layer_dense(units = 64,
-                activation = 'relu',
-                input_shape = c(ncol(X_l))) %>%
-    layer_dense(units = 64,
-                activation = 'relu',
-                kernel_regularizer = regularizer_l2(l2_reg)) %>%
-    layer_dropout(rate = 0.5) %>%
-    layer_dense(units = 64,
-                activation = 'relu',
-                kernel_regularizer = regularizer_l2(l2_reg)) %>%
-    layer_dropout(rate = 0.5) %>%
-    layer_dense(units = 64,
-                activation = 'relu' ) %>%
-    layer_dense(units = 10,
-                activation = 'softmax')
-
-
-  param_nnet.y =keras_model_sequential() %>%
-    layer_dense(units = 64,
-                activation = 'relu',
-                input_shape = c(ncol(X_f))) %>%
-    layer_dense(units = 10,
-                activation = 'softmax')
-
-  library(softImpute)
-  res_nnet <-cEBMF  ( Y=Z,
-                      X_l,
-                      X_f,
-                      mnreg_type="keras",
-                      K=4,
-                      type_noise='constant',
-                      init_type="udv",
-                      maxit=10,
-                      tol=1e-3 ,
-                      param_como.x  = list(max_class=10,mnreg_type="keras",
-                                           prior="mix_exp" ,
-                                           epoch     =50,
-                                           batch_size= 500),
-                      param_como.y  = list(max_class=10,mnreg_type="keras",
-                                           prior="mix_norm" ,
-                                           epoch     =50,
-                                           batch_size= 100),
-                      param_nnet.x  =param_nnet.x ,
-                      param_nnet.y  =param_nnet.y,
-
-                      maxit_como  = 2)
-
-
 
   library(flashier)
 
@@ -130,7 +79,7 @@ tiling_sim <-  function(noise_level,seed=1){
     Z <- matrix( 1, nrow=length(x), ncol=1)
     param_como = list(max_class= 10,
                       mnreg_type="keras",
-                      prior    ='mix_norm',
+                      prior    ='mix_exp',
                       epoch     =150)
     data <- comoR:::como_prep_data (betahat=x,
                                     se=s, X=X,
@@ -201,7 +150,7 @@ tiling_sim <-  function(noise_level,seed=1){
 
   svd_res  = svd(Z)
   #load a spatial data
-  load("/home/wdenault/cEBMF_RCC_experiments/misc/run_spatial_DLPFC9.RData")
+  load("/home/cEBMF_RCC_experiments/misc/run_spatial_DLPFC9.RData")
 
 
   library(SpatialPCA)

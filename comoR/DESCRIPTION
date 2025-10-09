@@ -1,0 +1,14 @@
+Package: comoR
+Title: Covariate-moderated Empirical Bayes Matrix Factorization Methods
+Version: 0.0.1.03
+Description: Implements  Covariate-moderated Empirical Bayes Matrix Factorization Methods
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.1
+Suggests: keras (>= 2.13.0), testthat (>= 3.0.0), softImpute (>=
+        1.4.1), ebnm (>= 1.1-2)
+Config/testthat/edition: 3
+Imports: Matrix
+ByteCompile: yes
+Built: R 4.3.2; ; 2024-05-20 19:21:19 UTC; windows

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head><title>R: Covariate-moderated Empirical Bayes Matrix Factorization Methods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body><div class="container">
+<h1> Covariate-moderated Empirical Bayes Matrix Factorization Methods
+<img class="toplogo" src="../../../doc/html/Rlogo.svg" alt="[R logo]" />
+</h1>
+<hr/>
+<div style="text-align: center;">
+<a href="../../../doc/html/packages.html"><img class="arrow" src="../../../doc/html/left.jpg" alt="[Up]" /></a>
+<a href="../../../doc/html/index.html"><img class="arrow" src="../../../doc/html/up.jpg" alt="[Top]" /></a>
+</div><h2>Documentation for package &lsquo;comoR&rsquo; version 0.0.1.03</h2>
+
+<ul><li><a href="../DESCRIPTION">DESCRIPTION file</a>.</li>
+</ul>
+
+<h2>Help Pages</h2>
+
+
+<table style="width: 100%;">
+<tr><td style="width: 25%;"><a href="dot-converged.html">.converged</a></td>
+<td>check if ELBO is converged to some tolerance threshold</td></tr>
+<tr><td style="width: 25%;"><a href="dot-diff.html">.diff</a></td>
+<td>helper function gets difference in ELBO between iterations</td></tr>
+<tr><td style="width: 25%;"><a href="autoselect_scales_mix_exp.html">autoselect_scales_mix_exp</a></td>
+<td>adapted from autoselect.mxisqp try to select a default range for the sigmaa values that should be used, based on the values of betahat and sebetahat mode is the location about which inference is going to be centered gridmult is the multiplier by which the sds differ across the grid</td></tr>
+<tr><td style="width: 25%;"><a href="autoselect_scales_mix_norm.html">autoselect_scales_mix_norm</a></td>
+<td>adapted from autoselect.mxisqp try to select a default range for the sigmaa values that should be used, based on the values of betahat and sebetahat mode is the location about which inference is going to be centered gridmult is the multiplier by which the sds differ across the grid</td></tr>
+<tr><td style="width: 25%;"><a href="cal_ind_moment12_mix_norm.html">cal_ind_moment12_mix_norm</a></td>
+<td>Compute individual posterior first and second moment</td></tr>
+<tr><td style="width: 25%;"><a href="cal_purity.html">cal_purity</a></td>
+<td>Cal purity ouput como2</td></tr>
+<tr><td style="width: 25%;"><a href="cEBMF.html">cEBMF</a></td>
+<td>covariate moderated Empirical Bayes Matrix Factorization</td></tr>
+<tr><td style="width: 25%;"><a href="como_prep_data.html">como_prep_data</a></td>
+<td>Prepare data for multinomial regression</td></tr>
+<tr><td style="width: 25%;"><a href="compute_data_loglikelihood.html">compute_data_loglikelihood</a></td>
+<td>Compute data likelihood</td></tr>
+<tr><td style="width: 25%;"><a href="compute_elbo.html">compute_elbo</a></td>
+<td>Compute ELBO, but if there is not ELBO</td></tr>
+<tr><td style="width: 25%;"><a href="compute_elbo.default.html">compute_elbo.default</a></td>
+<td>Default no ELBO</td></tr>
+<tr><td style="width: 25%;"><a href="compute_posterior_assignment.html">compute_posterior_assignment</a></td>
+<td>Compute Posterior Assignment Probabilities For each data point return posterior assignment probabilities</td></tr>
+<tr><td style="width: 25%;"><a href="convolved_logpdf.html">convolved_logpdf</a></td>
+<td>Convolved logpdf</td></tr>
+<tr><td style="width: 25%;"><a href="convolved_logpdf.exp.html">convolved_logpdf.exp</a></td>
+<td>Convolution between an exponential and Normal distribution with variance given by sum of component dist. and noise</td></tr>
+<tr><td style="width: 25%;"><a href="convolved_logpdf.normal.html">convolved_logpdf.normal</a></td>
+<td>Normal distribution with variance given by sum of component dist. and noise</td></tr>
+<tr><td style="width: 25%;"><a href="convolved_logpdf.point.html">convolved_logpdf.point</a></td>
+<td>Just a normal distribution with mean centered at the point mass</td></tr>
+<tr><td style="width: 25%;"><a href="data_initialize_como.html">data_initialize_como</a></td>
+<td>data_initialize_como @param data description @param scales description @param mu0 description @param var0 description @param nullweight description @param mnreg_type description @param param_nnet description</td></tr>
+<tr><td style="width: 25%;"><a href="get_fdr.html">get_fdr</a></td>
+<td>Compute individual fdr value como/como2 model with centered normal mixture</td></tr>
+<tr><td style="width: 25%;"><a href="get_fdr.como.html">get_fdr.como</a></td>
+<td>Compute individual fdr value como model with centered normal mixture</td></tr>
+<tr><td style="width: 25%;"><a href="get_lfdr.html">get_lfdr</a></td>
+<td>Compute individual lfdr value como/como2 model with centered normal mixture</td></tr>
+<tr><td style="width: 25%;"><a href="initialize_como.html">initialize_como</a></td>
+<td>Function implementation the como mode</td></tr>
+<tr><td style="width: 25%;"><a href="init_cEBMF.html">init_cEBMF</a></td>
+<td>Initialize cEBMF object</td></tr>
+<tr><td style="width: 25%;"><a href="out_prep.cEBMF.html">out_prep.cEBMF</a></td>
+<td>prepare output of cEMBF function</td></tr>
+<tr><td style="width: 25%;"><a href="post_mean_sd.html">post_mean_sd</a></td>
+<td>Compute post first and second moment from como and como2 object</td></tr>
+<tr><td style="width: 25%;"><a href="post_mean_sd.como.html">post_mean_sd.como</a></td>
+<td>Compute individual posterior mean and sd under como model</td></tr>
+<tr><td style="width: 25%;"><a href="set_xi.html">set_xi</a></td>
+<td>set xi, update tau</td></tr>
+<tr><td style="width: 25%;"><a href="sigmoid.html">sigmoid</a></td>
+<td>Sigmoid sigmoid function coverts log-odds to probability</td></tr>
+<tr><td style="width: 25%;"><a href="sim_como_beta.html">sim_como_beta</a></td>
+<td>Simulate data under como model with beta distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sim_mixture_beta.html">sim_mixture_beta</a></td>
+<td>Simulate mixture of beta distribution</td></tr>
+<tr><td style="width: 25%;"><a href="sim_ser_with_covariates.html">sim_ser_with_covariates</a></td>
+<td>simulate SER with 3 covariates</td></tr>
+<tr><td style="width: 25%;"><a href="sim_susie.html">sim_susie</a></td>
+<td>Simulate data under the logistic SuSiE model</td></tr>
+<tr><td style="width: 25%;"><a href="sim_twococomo.html">sim_twococomo</a></td>
+<td>Simulate data under the twococomo SuSiE model</td></tr>
+<tr><td style="width: 25%;"><a href="t_ind_var.html">t_ind_var</a></td>
+<td>Compute individual posterior variance from marginal normal mean model</td></tr>
+<tr><td style="width: 25%;"><a href="t_ind_var.como.html">t_ind_var.como</a></td>
+<td>Compute individual posterior variance from marginal normal mean model</td></tr>
+<tr><td style="width: 25%;"><a href="update_params.html">update_params</a></td>
+<td>Update Params</td></tr>
+<tr><td style="width: 25%;"><a href="update_params.normal.html">update_params.normal</a></td>
+<td>Note: only updates the variance parameter, these components are assumed to be mean 0</td></tr>
+<tr><td style="width: 25%;"><a href="update_tau.cEBMF.html">update_tau.cEBMF</a></td>
+<td>Estimate noise value</td></tr>
+</table>
+</div></body></html>

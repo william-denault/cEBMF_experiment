@@ -8,7 +8,6 @@
 #SBATCH --ntasks-per-node=10
 #SBATCH --mem-per-cpu=5000
 #SBATCH --array=1-4
-#SBATCH --account=pi-mstephens
 
 module load R/4.1.0
-Rscript /home/wdenault/cEBMF_RCC_experiments/script/cov_sparsity/cEBMF_simu_$SLURM_ARRAY_TASK_ID.R
+Rscript  /home/cEBMF_RCC_experiments/script/cov_sparsity/cEBMF_simu_$SLURM_ARRAY_TASK_ID.R

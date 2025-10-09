@@ -1,0 +1,81 @@
+.converged              check if ELBO is converged to some tolerance
+                        threshold
+.diff                   helper function gets difference in ELBO between
+                        iterations
+autoselect_scales_mix_exp
+                        adapted from autoselect.mxisqp try to select a
+                        default range for the sigmaa values that should
+                        be used, based on the values of betahat and
+                        sebetahat mode is the location about which
+                        inference is going to be centered gridmult is
+                        the multiplier by which the sds differ across
+                        the grid
+autoselect_scales_mix_norm
+                        adapted from autoselect.mxisqp try to select a
+                        default range for the sigmaa values that should
+                        be used, based on the values of betahat and
+                        sebetahat mode is the location about which
+                        inference is going to be centered gridmult is
+                        the multiplier by which the sds differ across
+                        the grid
+cEBMF                   covariate moderated Empirical Bayes Matrix
+                        Factorization
+cal_ind_moment12_mix_norm
+                        Compute individual posterior first and second
+                        moment
+cal_purity              Cal purity ouput como2
+como_prep_data          Prepare data for multinomial regression
+compute_data_loglikelihood
+                        Compute data likelihood
+compute_elbo            Compute ELBO, but if there is not ELBO
+compute_elbo.default    Default no ELBO
+compute_posterior_assignment
+                        Compute Posterior Assignment Probabilities For
+                        each data point return posterior assignment
+                        probabilities
+convolved_logpdf        Convolved logpdf
+convolved_logpdf.exp    Convolution between an exponential and Normal
+                        distribution with variance given by sum of
+                        component dist. and noise
+convolved_logpdf.normal
+                        Normal distribution with variance given by sum
+                        of component dist. and noise
+convolved_logpdf.point
+                        Just a normal distribution with mean centered
+                        at the point mass
+data_initialize_como    data_initialize_como @param data description
+                        @param scales description @param mu0
+                        description @param var0 description @param
+                        nullweight description @param mnreg_type
+                        description @param param_nnet description
+get_fdr                 Compute individual fdr value como/como2 model
+                        with centered normal mixture
+get_fdr.como            Compute individual fdr value como model with
+                        centered normal mixture
+get_lfdr                Compute individual lfdr value como/como2 model
+                        with centered normal mixture
+init_cEBMF              Initialize cEBMF object
+initialize_como         Function implementation the como mode
+out_prep.cEBMF          prepare output of cEMBF function
+post_mean_sd            Compute post first and second moment from como
+                        and como2 object
+post_mean_sd.como       Compute individual posterior mean and sd under
+                        como model
+set_xi                  set xi, update tau
+sigmoid                 Sigmoid sigmoid function coverts log-odds to
+                        probability
+sim_como_beta           Simulate data under como model with beta
+                        distribution
+sim_mixture_beta        Simulate mixture of beta distribution
+sim_ser_with_covariates
+                        simulate SER with 3 covariates
+sim_susie               Simulate data under the logistic SuSiE model
+sim_twococomo           Simulate data under the twococomo SuSiE model
+t_ind_var               Compute individual posterior variance from
+                        marginal normal mean model
+t_ind_var.como          Compute individual posterior variance from
+                        marginal normal mean model
+update_params           Update Params
+update_params.normal    Note: only updates the variance parameter,
+                        these components are assumed to be mean 0
+update_tau.cEBMF        Estimate noise value
