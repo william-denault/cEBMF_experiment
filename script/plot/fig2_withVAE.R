@@ -12,23 +12,23 @@ standardize_method_order <- function(df) {
 
 
 colors <- c("#6BAED6", "#74C476", "#FD8D3C", "#F768A1")
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_1.RData")
 tres <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_2.RData")
 res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_3.RData")
 res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_4.RData")
 res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_1.RData")
 plot(tres[,1],tres[,3])
 abline(a=0,b=1)
 
@@ -91,28 +91,28 @@ tdf=data.frame(Method=
 )
 df_simu= rbind(df_simu, tdf)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_1.RData")
 mfaires  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par) ))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_2.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_3.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_4.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
 mfaires= cbind( rep("MFAI", nrow(mfaires)),mfaires)
 mfaires= data.frame(mfaires)
 colnames(mfaires)[1:2]= c("Method","RMSE")
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_1.RData")
 CMFes  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par) ))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_2.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_3.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_4.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
 CMFes= cbind( rep("CMF", nrow(CMFes)),CMFes)
@@ -205,26 +205,26 @@ P14
 
 library(ggplot2)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/tiling_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/tiling_1.RData")
 tres <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ noise_level ) ))
 
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/tiling_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/tiling_2.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/tiling_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/tiling_3.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 
 res[, ncol(res)] <- 3
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/tiling_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/tiling_4.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
 
 
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/tiling_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/tiling_4.RData")
 
 
 
@@ -278,14 +278,14 @@ tdf=data.frame(Method=
 
 df_simu= rbind(df_simu, tdf)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_mfair/tiling_1.RData.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_mfair/tiling_1.RData.RData")
 mfaires  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_mfair,  res[[i]]$ noise_level ) ))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_mfair/tiling_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_mfair/tiling_2.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_mfair,  res[[i]]$ noise_level ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_mfair/tiling_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_mfair/tiling_3.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_mfair,  res[[i]]$ noise_level ) )))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_mfair/tiling_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_mfair/tiling_4.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_mfair,  res[[i]]$ noise_level ) )))
 
 
@@ -294,13 +294,13 @@ mfaires= data.frame(Method=rep("MFAI",nrow(mfaires)),
                     noise_level=mfaires[,2] )
 
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_CMF/tiling_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_CMF/tiling_1.RData")
 CMFes  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_CMF,  res[[i]]$ noise_level ) ))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_CMF/tiling_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_CMF/tiling_2.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_CMF,  res[[i]]$ noise_level ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_CMF/tiling_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_CMF/tiling_3.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_CMF,  res[[i]]$ noise_level ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/tiling_results_CMF/tiling_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/tiling_results_CMF/tiling_4.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse_CMF,  res[[i]]$ noise_level ) )))
 
 
@@ -390,22 +390,22 @@ P24
 
 
 ## uniformative covar -----
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_0.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_0.RData")
 tres <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_01.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_01.RData")
 res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_02.RData")
-res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
-tres <- rbind(tres, res)
-
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_03.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_02.RData")
 res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
 tres <- rbind(tres, res)
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/check_cEBMF_03.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_03.RData")
+res  <- do.call( rbind, lapply ( 1 :length(res) , function(i) c(res[[i]]$rmse, res[[i]]$par ) ))
+tres <- rbind(tres, res)
+
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/check_cEBMF_03.RData")
 plot(tres[,1],tres[,3])
 abline(a=0,b=1)
 
@@ -481,28 +481,28 @@ df_simu= rbind(df_simu, tdf)
 
 
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_1.RData")
 mfaires  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par) ))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_2.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_3.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_mfair/check_mfair_4.RData")
 mfaires  <-rbind( mfaires, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
 mfaires= cbind( rep("MFAI", nrow(mfaires)),mfaires)
 mfaires= data.frame(mfaires)
 colnames(mfaires)[1:2]= c("Method","RMSE")
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_1.RData")
 CMFes  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par) ))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_2.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_3.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/cov_sparsity_results_CMF/check_CMF_4.RData")
 CMFes  <-rbind( CMFes, do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$ rmse ,  res[[i]]$ par ) )))
 
 CMFes= cbind( rep("CMF", nrow(CMFes)),CMFes)
@@ -589,23 +589,23 @@ P34
 
 #shifted tiled clustering  -----
 library(ggplot2)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_1.RData")
 tres <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ noise_level ) ))
 
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_2.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_2.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse, res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_3.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_3.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 
 
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_4.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/additional_experiment_for_rebutall/shifted_tiled_results/shifted_tiling_4.RData")
 res  <- do.call( rbind, lapply ( 1:length(res) , function(i) c(res[[i]]$rmse,  res[[i]]$ noise_level ) ))
 tres <- rbind(tres, res)
-load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_submission/cEBMF_RCC_experiments/sim/tiling_1.RData")
+load("C:/Document/Serieux/Travail/Data_analysis_and_papers/cEBMF_experiment/sim/tiling_1.RData")
 colnames(tres)[8] <- "noise_level"
 tlist <- list ()
 h=1

@@ -9,8 +9,8 @@ library(PMA)
 
 
 
-if(file.exists("/home/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData"  )){
-  load("/home/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
+if(file.exists("/home/wdenault/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData"  )){
+  load("/home/wdenault/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
 
 }else{
   res <-list()
@@ -25,6 +25,6 @@ for (o  in (length(res)+1):10000) {
                              epoch=100
                              )
 
-  save(res, file="/home/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
+  save(res, file="/home/wdenault/cEBMF_RCC_experiments/sim/check_cEBMF_1.RData")
 }
 
