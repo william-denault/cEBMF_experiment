@@ -2,7 +2,7 @@
 ### sparisty  ------
 
 
-desired_order <-c("cEBMF", "EBMF", "MFAI", "PMD", "Spatial PCA", "VAE", "cVAE", "NCF")
+desired_order <-c("cEBMF", "EBMF", "MFAI", "PMD", "spaPCA", "VAE", "cVAE", "NCF")
 
 standardize_method_order <- function(df) {
 
@@ -313,11 +313,15 @@ df_simu= rbind(df_simu, mfaires,CMFes)
 # Verify the changes
 
 
+table(df_simu$Method)
 df_simu2=df_simu
 table(df_simu2$Method)
 
+
+
 df_simu2 <- standardize_method_order(df_simu2)
 df_simu2 <- df_simu2[which( df_simu2$Method %in% c("cEBMF", "EBMF","MFAI", "PMD","spaPCA","VAE","cVAE" ,"NCF")),]
+table(df_simu2$Method)
 
 df_simu2$Method= factor(df_simu2$Method, levels=c("cEBMF", "EBMF","MFAI", "PMD","spaPCA","VAE","cVAE" ,"NCF"))
 
