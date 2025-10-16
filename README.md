@@ -7,7 +7,7 @@
 1. [Overview](#overview)
 2. [Usage](#usage)
 3. [Repository Structure](#repository-structure)
-4. [Structure of the data folder](#data_structure)
+4. [Structure of the data folder](#structure-of-the-data-folder)
 5. [Code Description](#code-description)
 6. [Requirements](#requirements)
 7. [License](#license)
@@ -53,7 +53,7 @@ run these analyses before running the NMF, EBNMF, and cEBNMF analyses.
 ```
 
 
-## Structure of the data folder {#structure}
+## Structure of the data folder
 
 The data folder contains the following subfolders:
 ```plaintext
